@@ -40,11 +40,13 @@
             color: #6b7280;
         }
 
+        /* Summary */
+
         .summary {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .summary-card {
@@ -71,10 +73,55 @@
             font-weight: bold;
         }
 
+        /* Progress */
+
+        .progress-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-top h2 {
+            font-size: 20px;
+        }
+
+        #progress-text {
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 14px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #4f46e5;
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+
+        /* Section */
+
         .section-title {
             margin: 30px 0 15px;
             font-size: 24px;
         }
+
+        /* Day Card */
 
         .day-card {
             background: white;
@@ -83,6 +130,12 @@
             margin-bottom: 18px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
             border-left: 5px solid #4f46e5;
+            transition: 0.2s;
+        }
+
+        .day-card.completed {
+            border-left-color: #16a34a;
+            opacity: 0.85;
         }
 
         .day-header {
@@ -137,6 +190,35 @@
             border-radius: 10px;
         }
 
+        /* Complete Button */
+
+        .complete-section {
+            margin-top: 18px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .complete-button {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 9px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .complete-button:hover {
+            background: #e0e7ff;
+        }
+
+        .day-card.completed .complete-button {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        /* Strategy */
+
         .strategy {
             background: white;
             padding: 25px;
@@ -149,6 +231,8 @@
             margin-top: 10px;
             line-height: 1.6;
         }
+
+        /* Bottom Button */
 
         .button {
             display: block;
@@ -169,6 +253,8 @@
             background: #4338ca;
         }
 
+        /* Mobile */
+
         @media (max-width: 700px) {
 
             .summary {
@@ -188,6 +274,14 @@
             .header h1 {
                 font-size: 30px;
             }
+
+            .complete-section {
+                justify-content: stretch;
+            }
+
+            .complete-button {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -195,6 +289,8 @@
 <body>
 
     <div class="container">
+
+        <!-- Header -->
 
         <div class="header">
 
@@ -244,6 +340,34 @@
         </div>
 
 
+        <!-- Progress -->
+
+        <div class="progress-card">
+
+            <div class="progress-top">
+
+                <h2>📊 Your Progress</h2>
+
+                <span id="progress-text">
+                    0 / {{ plan.days|length }}
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progress-fill">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Study Plan -->
+
         <h2 class="section-title">
             🎯 Your Study Plan
         </h2>
@@ -253,11 +377,15 @@
 
         {% for day in plan.days %}
 
-        <div class="day-card">
+        <div
+            class="day-card"
+            data-day="{{ day.day }}">
 
             <div class="day-header">
 
-                <h2>Day {{ day.day }}</h2>
+                <h2>
+                    Day {{ day.day }}
+                </h2>
 
                 <div class="date">
                     {{ day.date }}
@@ -267,7 +395,9 @@
 
 
             <div class="topic">
+
                 📖 {{ day.topic }}
+
             </div>
 
 
@@ -305,6 +435,21 @@
 
             </div>
 
+
+            <!-- Complete Button -->
+
+            <div class="complete-section">
+
+                <button
+                    class="complete-button"
+                    onclick="toggleComplete({{ day.day }})">
+
+                    ☐ Mark Complete
+
+                </button>
+
+            </div>
+
         </div>
 
         {% endfor %}
@@ -328,6 +473,95 @@
         </a>
 
     </div>
+
+
+    <!-- Progress JavaScript -->
+
+    <script>
+
+        const totalDays = {{ plan.days|length }};
+
+        const storageKey = "studypilot_progress";
+
+        let completedDays =
+            JSON.parse(localStorage.getItem(storageKey)) || [];
+
+
+        function updateProgress() {
+
+            const completedCount = completedDays.length;
+
+            const percentage =
+                totalDays === 0
+                    ? 0
+                    : (completedCount / totalDays) * 100;
+
+
+            document.getElementById("progress-text").innerText =
+                `${completedCount} / ${totalDays}`;
+
+
+            document.getElementById("progress-fill").style.width =
+                `${percentage}%`;
+
+
+            document.querySelectorAll(".day-card").forEach(card => {
+
+                const day =
+                    Number(card.dataset.day);
+
+                const button =
+                    card.querySelector(".complete-button");
+
+
+                if (completedDays.includes(day)) {
+
+                    card.classList.add("completed");
+
+                    button.innerText =
+                        "✅ Completed";
+
+                } else {
+
+                    card.classList.remove("completed");
+
+                    button.innerText =
+                        "☐ Mark Complete";
+
+                }
+
+            });
+
+
+            localStorage.setItem(
+                storageKey,
+                JSON.stringify(completedDays)
+            );
+        }
+
+
+        function toggleComplete(day) {
+
+            if (completedDays.includes(day)) {
+
+                completedDays =
+                    completedDays.filter(
+                        item => item !== day
+                    );
+
+            } else {
+
+                completedDays.push(day);
+
+            }
+
+            updateProgress();
+        }
+
+
+        updateProgress();
+
+    </script>
 
 </body>
 
