@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyPilot - Your Study Plan</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .summary-card .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin: 30px 0 15px;
+            font-size: 24px;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid #4f46e5;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .day-header h2 {
+            font-size: 21px;
+        }
+
+        .date {
+            color: #6b7280;
+            font-weight: bold;
+        }
+
+        .topic {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 10px;
+        }
+
+        .detail span {
+            display: block;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .detail strong {
+            font-size: 15px;
+        }
+
+        .revision {
+            margin-top: 12px;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 10px;
+        }
+
+        .strategy {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .strategy p {
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #4338ca;
+        }
+
+        @media (max-width: 700px) {
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .day-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+
+            <h1>📚 StudyPilot</h1>
+
+            <p>Your personalized AI study plan</p>
+
+        </div>
+
+
+        <!-- Summary -->
+
+        <div class="summary">
+
+            <div class="summary-card">
+
+                <div class="icon">📅</div>
+
+                <h3>Exam Date</h3>
+
+                <p>{{ plan.exam_date }}</p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="icon">⏳</div>
+
+                <h3>Days Available</h3>
+
+                <p>{{ plan.days_remaining }}</p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="icon">⏰</div>
+
+                <h3>Daily Study</h3>
+
+                <p>{{ plan.study_hours }} hrs</p>
+
+            </div>
+
+        </div>
+
+
+        <h2 class="section-title">
+            🎯 Your Study Plan
+        </h2>
+
+
+        <!-- Daily Plans -->
+
+        {% for day in plan.days %}
+
+        <div class="day-card">
+
+            <div class="day-header">
+
+                <h2>Day {{ day.day }}</h2>
+
+                <div class="date">
+                    {{ day.date }}
+                </div>
+
+            </div>
+
+
+            <div class="topic">
+                📖 {{ day.topic }}
+            </div>
+
+
+            <div class="details">
+
+                <div class="detail">
+
+                    <span>📚 Study Time</span>
+
+                    <strong>
+                        {{ day.study_time }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span>💻 Practice</span>
+
+                    <strong>
+                        {{ day.practice }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="revision">
+
+                🔄 <strong>Revision:</strong>
+
+                {{ day.revision }}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+        <!-- Revision Strategy -->
+
+        <div class="strategy">
+
+            <h2>🧠 Revision Strategy</h2>
+
+            <p>
+                {{ plan.revision_strategy }}
+            </p>
+
+        </div>
+
+
+        <a href="/" class="button">
+            ← Create Another Study Plan
+        </a>
+
+    </div>
+
+</body>
+
+</html>
