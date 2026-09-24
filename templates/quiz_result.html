@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>StudyPilot - Quiz Result</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .result-card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+            margin-bottom: 25px;
+        }
+
+        .result-card h1 {
+            margin-bottom: 10px;
+        }
+
+        .topic {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .score {
+            font-size: 52px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .percentage {
+            font-size: 20px;
+            margin-top: 8px;
+        }
+
+        .review {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+        }
+
+        .review h3 {
+            margin-bottom: 12px;
+        }
+
+        .review p {
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .correct {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .wrong {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .explanation {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #4338ca;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- RESULT SUMMARY -->
+
+    <div class="result-card">
+
+        <h1>
+            🎉 Quiz Completed
+        </h1>
+
+        <div class="topic">
+            {{ topic }}
+        </div>
+
+        <div class="score">
+            {{ score }} / {{ total_questions }}
+        </div>
+
+        <div class="percentage">
+            {{ "%.0f"|format(percentage) }}%
+        </div>
+
+    </div>
+
+
+    <!-- QUESTION REVIEW -->
+
+    {% for result in results %}
+
+    <div class="review">
+
+        <h3>
+            Question {{ loop.index }}
+        </h3>
+
+        <p>
+            {{ result.question }}
+        </p>
+
+
+        {% if result.is_correct %}
+
+        <p class="correct">
+            ✅ Correct
+        </p>
+
+        {% else %}
+
+        <p class="wrong">
+            ❌ Incorrect
+        </p>
+
+        {% endif %}
+
+
+        <p>
+            <strong>Your answer:</strong>
+            {{ result.selected }}
+        </p>
+
+
+        <p>
+            <strong>Correct answer:</strong>
+            {{ result.correct }}
+        </p>
+
+
+        <div class="explanation">
+
+            <strong>Explanation:</strong>
+
+            {{ result.explanation }}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- BACK BUTTON -->
+
+    <a
+        href="/"
+        class="button"
+    >
+        ← Create New Study Plan
+    </a>
+
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>StudyPilot - AI Quiz</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .topic-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .question-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+        }
+
+        .question-number {
+            color: #4f46e5;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            font-size: 19px;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px;
+            margin-bottom: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .option:hover {
+            background: #f8fafc;
+            border-color: #c7d2fe;
+        }
+
+        .option input {
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background: #4338ca;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            padding: 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #4f46e5;
+            background: white;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .header h1 {
+                font-size: 30px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .question {
+                font-size: 17px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            🤖 StudyPilot Quiz
+        </h1>
+
+        <p>
+            Test your understanding
+        </p>
+
+        <div class="topic-badge">
+            {{ quiz.topic }}
+        </div>
+
+    </div>
+
+
+    <!-- QUIZ -->
+
+    <form
+        action="/submit-quiz"
+        method="POST"
+    >
+
+        <!-- Quiz ID -->
+
+        <input
+            type="hidden"
+            name="quiz_id"
+            value="{{ quiz.id }}"
+        >
+
+
+        <!-- QUESTIONS -->
+
+        {% for question in quiz.questions %}
+
+        <div class="question-card">
+
+            <div class="question-number">
+                Question {{ loop.index }}
+            </div>
+
+
+            <div class="question">
+                {{ question.question }}
+            </div>
+
+
+            <!-- Save current question number -->
+
+            {% set question_number = loop.index0 %}
+
+
+            <!-- OPTIONS -->
+
+            {% for option in question.options %}
+
+            <div class="option">
+
+                <input
+                    type="radio"
+                    id="q{{ question_number }}_option{{ loop.index0 }}"
+                    name="question_{{ question_number }}"
+                    value="{{ loop.index0 }}"
+                    required
+                >
+
+                <label
+                    for="q{{ question_number }}_option{{ loop.index0 }}"
+                >
+                    {{ option }}
+                </label>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endfor %}
+
+
+        <!-- SUBMIT -->
+
+        <button
+            type="submit"
+            class="submit-button"
+        >
+            Submit Quiz 🚀
+        </button>
+
+    </form>
+
+
+    <!-- BACK -->
+
+    <a
+        href="/"
+        class="back-button"
+    >
+        ← Back to Home
+    </a>
+
+
+</div>
+
+</body>
+
+</html>

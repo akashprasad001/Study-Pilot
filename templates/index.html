@@ -2,17 +2,25 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>StudyPilot - AI Study Planner</title>
 
+
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
 
         body {
             font-family: Arial, sans-serif;
@@ -20,31 +28,108 @@
             color: #1f2937;
         }
 
+
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 25px 20px 40px;
         }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+
+        .nav-logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .nav-button {
+            padding: 9px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        .login-button {
+            color: #4f46e5;
+            background: white;
+            border: 1px solid #4f46e5;
+        }
+
+
+        .signup-button {
+            color: white;
+            background: #4f46e5;
+        }
+
+
+        .logout-button {
+            color: #dc2626;
+            background: white;
+            border: 1px solid #dc2626;
+        }
+
+
+        .user-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #374151;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
 
         .header {
             text-align: center;
             margin-bottom: 35px;
         }
 
+
         .logo {
             font-size: 42px;
             margin-bottom: 10px;
         }
+
 
         .header h1 {
             font-size: 38px;
             margin-bottom: 10px;
         }
 
+
         .header p {
             color: #6b7280;
             font-size: 18px;
         }
+
+
+        /* =========================
+           MAIN CARD
+        ========================= */
 
         .card {
             background: white;
@@ -53,24 +138,29 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
 
+
         .card h2 {
             margin-bottom: 8px;
         }
+
 
         .description {
             color: #6b7280;
             margin-bottom: 30px;
         }
 
+
         .form-group {
             margin-bottom: 25px;
         }
+
 
         label {
             display: block;
             font-weight: bold;
             margin-bottom: 8px;
         }
+
 
         textarea,
         input {
@@ -83,16 +173,19 @@
             outline: none;
         }
 
+
         textarea {
             resize: vertical;
             min-height: 180px;
         }
+
 
         textarea:focus,
         input:focus {
             border-color: #6366f1;
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
         }
+
 
         .button {
             width: 100%;
@@ -106,9 +199,15 @@
             cursor: pointer;
         }
 
+
         .button:hover {
             background: #4338ca;
         }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
 
         .features {
             display: grid;
@@ -116,6 +215,7 @@
             gap: 15px;
             margin-top: 25px;
         }
+
 
         .feature {
             background: white;
@@ -125,20 +225,28 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
+
         .feature-icon {
             font-size: 28px;
             margin-bottom: 8px;
         }
+
 
         .feature h3 {
             font-size: 16px;
             margin-bottom: 5px;
         }
 
+
         .feature p {
             color: #6b7280;
             font-size: 13px;
         }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
 
         .footer {
             text-align: center;
@@ -147,183 +255,325 @@
             font-size: 14px;
         }
 
+
+        /* =========================
+           MOBILE
+        ========================= */
+
         @media (max-width: 700px) {
+
+            .navbar {
+                align-items: flex-start;
+            }
+
+
+            .nav-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+
+            .user-name {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 5px;
+            }
+
 
             .header h1 {
                 font-size: 30px;
             }
 
+
             .card {
                 padding: 25px;
             }
 
+
             .features {
                 grid-template-columns: 1fr;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
 
-        <!-- Header -->
+<div class="container">
 
-        <div class="header">
 
-            <div class="logo">📚</div>
+    <!-- =========================
+         NAVBAR
+    ========================= -->
 
-            <h1>StudyPilot</h1>
+    <div class="navbar">
 
-            <p>
-                Your AI-powered personal study planner
-            </p>
+
+        <div class="nav-logo">
+            🎓 StudyPilot
+        </div>
+
+
+        {% if session.get("user_id") %}
+
+        <div class="user-name">
+
+            <span>
+                👋 {{ session.get("user_name") }}
+            </span>
+
+            <a
+                href="/logout"
+                class="nav-button logout-button"
+            >
+                Logout
+            </a>
 
         </div>
 
 
-        <!-- Main Form -->
+        {% else %}
 
-        <div class="card">
+        <div class="nav-buttons">
 
-            <h2>🎯 Create Your Study Plan</h2>
+            <a
+                href="/login"
+                class="nav-button login-button"
+            >
+                Login
+            </a>
 
-            <p class="description">
-                Tell StudyPilot about your syllabus, exam date and available study time.
-                AI will create a personalized study plan for you.
-            </p>
+
+            <a
+                href="/signup"
+                class="nav-button signup-button"
+            >
+                Sign Up
+            </a>
+
+        </div>
+
+        {% endif %}
 
 
-            <form action="/create-plan" method="POST">
+    </div>
 
-                <!-- Syllabus -->
 
-                <div class="form-group">
+    <!-- =========================
+         HEADER
+    ========================= -->
 
-                    <label for="syllabus">
-                        📖 Syllabus / Topics
-                    </label>
+    <div class="header">
 
-                    <textarea
-                        id="syllabus"
-                        name="syllabus"
-                        placeholder="Example:
+        <div class="logo">
+            📚
+        </div>
+
+
+        <h1>
+            StudyPilot
+        </h1>
+
+
+        <p>
+            Your AI-powered personal study planner
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN FORM
+    ========================= -->
+
+    <div class="card">
+
+        <h2>
+            🎯 Create Your Study Plan
+        </h2>
+
+
+        <p class="description">
+
+            Tell StudyPilot about your syllabus,
+            exam date and available study time.
+            AI will create a personalized study plan for you.
+
+        </p>
+
+
+        <form
+            action="/create-plan"
+            method="POST"
+        >
+
+
+            <!-- SYLLABUS -->
+
+            <div class="form-group">
+
+                <label for="syllabus">
+                    📖 Syllabus / Topics
+                </label>
+
+
+                <textarea
+                    id="syllabus"
+                    name="syllabus"
+                    placeholder="Example:
 
 Binary Search
 Merge Sort
 Quick Sort
 Dijkstra Algorithm
 Matrix Chain Multiplication"
-                        required></textarea>
-
-                </div>
-
-
-                <!-- Exam Date -->
-
-                <div class="form-group">
-
-                    <label for="exam_date">
-                        📅 Exam Date
-                    </label>
-
-                    <input
-                        type="date"
-                        id="exam_date"
-                        name="exam_date"
-                        required>
-
-                </div>
-
-
-                <!-- Study Hours -->
-
-                <div class="form-group">
-
-                    <label for="study_hours">
-                        ⏰ Daily Study Hours
-                    </label>
-
-                    <input
-                        type="number"
-                        id="study_hours"
-                        name="study_hours"
-                        min="1"
-                        max="24"
-                        placeholder="Example: 3"
-                        required>
-
-                </div>
-
-
-                <!-- Submit -->
-
-                <button
-                    type="submit"
-                    class="button">
-
-                    🤖 Create My AI Study Plan
-
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- Features -->
-
-        <div class="features">
-
-            <div class="feature">
-
-                <div class="feature-icon">🤖</div>
-
-                <h3>AI Planning</h3>
-
-                <p>
-                    Personalized study plans based on your syllabus.
-                </p>
+                    required
+                ></textarea>
 
             </div>
 
 
-            <div class="feature">
+            <!-- EXAM DATE -->
 
-                <div class="feature-icon">📅</div>
+            <div class="form-group">
 
-                <h3>Smart Scheduling</h3>
+                <label for="exam_date">
+                    📅 Exam Date
+                </label>
 
-                <p>
-                    Organize your preparation before the exam.
-                </p>
+
+                <input
+                    type="date"
+                    id="exam_date"
+                    name="exam_date"
+                    required
+                >
+
+            </div>
+
+
+            <!-- STUDY HOURS -->
+
+            <div class="form-group">
+
+                <label for="study_hours">
+                    ⏰ Daily Study Hours
+                </label>
+
+
+                <input
+                    type="number"
+                    id="study_hours"
+                    name="study_hours"
+                    min="1"
+                    max="24"
+                    placeholder="Example: 3"
+                    required
+                >
 
             </div>
 
 
-            <div class="feature">
+            <!-- SUBMIT -->
 
-                <div class="feature-icon">📊</div>
+            <button
+                type="submit"
+                class="button"
+            >
 
-                <h3>Progress Tracking</h3>
+                🤖 Create My AI Study Plan
 
-                <p>
-                    Track your learning and improve weak areas.
-                </p>
-
-            </div>
-
-        </div>
+            </button>
 
 
-        <div class="footer">
-
-            StudyPilot • AI-powered learning assistant
-
-        </div>
+        </form>
 
     </div>
+
+
+    <!-- =========================
+         FEATURES
+    ========================= -->
+
+    <div class="features">
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+
+            <h3>
+                AI Planning
+            </h3>
+
+
+            <p>
+                Personalized study plans based on your syllabus.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📅
+            </div>
+
+
+            <h3>
+                Smart Scheduling
+            </h3>
+
+
+            <p>
+                Organize your preparation before the exam.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+
+            <h3>
+                Progress Tracking
+            </h3>
+
+
+            <p>
+                Track your learning and improve weak areas.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        StudyPilot • AI-powered learning assistant
+
+    </div>
+
+
+</div>
+
 
 </body>
 
