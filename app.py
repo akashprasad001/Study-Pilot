@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from groq import Groq
 from datetime import date, datetime, timedelta
@@ -15,13 +15,21 @@ app = Flask(__name__)
 # DATABASE SETUP
 # ==========================================
 
-def init_db():
+def get_db():
 
     conn = sqlite3.connect("studypilot.db")
 
+    conn.row_factory = sqlite3.Row
+
+    return conn
+
+
+def init_db():
+
+    conn = get_db()
+
     cursor = conn.cursor()
 
-    # Study plans table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS study_plans (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,18 +41,19 @@ def init_db():
         )
     """)
 
-    # Progress table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS progress (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             plan_id INTEGER NOT NULL,
             day_number INTEGER NOT NULL,
             completed INTEGER DEFAULT 0,
-            FOREIGN KEY (plan_id) REFERENCES study_plans(id)
+            FOREIGN KEY (plan_id) REFERENCES study_plans(id),
+            UNIQUE(plan_id, day_number)
         )
     """)
 
     conn.commit()
+
     conn.close()
 
 
@@ -74,9 +83,10 @@ def home():
 @app.route("/create-plan", methods=["POST"])
 def create_plan():
 
-    # Get data from form
     syllabus = request.form["syllabus"].strip()
+
     exam_date = request.form["exam_date"]
+
     study_hours = request.form["study_hours"]
 
 
@@ -103,9 +113,7 @@ def create_plan():
         return """
         <h1>Invalid Exam Date ❌</h1>
 
-        <p>
-            Please select a future exam date.
-        </p>
+        <p>Please select a future exam date.</p>
 
         <a href="/">
             Go Back
@@ -136,7 +144,6 @@ def create_plan():
         ]
 
 
-    # Convert dates into text
     available_dates = "\n".join(
         f"Day {i + 1}: {d}"
         for i, d in enumerate(study_dates)
@@ -311,10 +318,8 @@ IMPORTANT:
 
         ],
 
-        # Give the model enough output space
         max_completion_tokens=4096,
 
-        # Reduce unnecessary reasoning for this structured task
         reasoning_effort="low",
 
         response_format={
@@ -340,14 +345,13 @@ IMPORTANT:
     ai_result = response.choices[0].message.content
 
 
-    # Safety check
     if not ai_result:
 
         return """
         <h1>AI Error ❌</h1>
 
         <p>
-            StudyPilot did not receive a valid response from the AI.
+            StudyPilot did not receive a valid response.
         </p>
 
         <a href="/">
@@ -356,7 +360,6 @@ IMPORTANT:
         """
 
 
-    # Convert JSON string into Python dictionary
     try:
 
         ai_plan = json.loads(ai_result)
@@ -368,7 +371,6 @@ IMPORTANT:
 
         <p>
             The AI returned an invalid study plan.
-            Please try again.
         </p>
 
         <a href="/">
@@ -378,36 +380,13 @@ IMPORTANT:
 
 
     # ==========================================
-    # CREATE PLAN OBJECT
+    # SAVE STUDY PLAN
     # ==========================================
 
-    plan = {
-
-        "exam_date": str(exam_day),
-
-        "days_remaining": days_remaining,
-
-        "study_hours": study_hours,
-
-        "days": ai_plan["days"],
-
-        "revision_strategy":
-        ai_plan["revision_strategy"]
-    }
-
-
-    # ==========================================
-    # SAVE STUDY PLAN TO DATABASE
-    # ==========================================
-
-    conn = sqlite3.connect(
-        "studypilot.db"
-    )
+    conn = get_db()
 
     cursor = conn.cursor()
 
-
-    # Insert study plan
     cursor.execute(
         """
         INSERT INTO study_plans
@@ -431,12 +410,14 @@ IMPORTANT:
     )
 
 
-    # Get newly created plan ID
     plan_id = cursor.lastrowid
 
 
-    # Create progress records
-    for day in plan["days"]:
+    # ==========================================
+    # CREATE PROGRESS RECORDS
+    # ==========================================
+
+    for day in ai_plan["days"]:
 
         cursor.execute(
             """
@@ -459,17 +440,192 @@ IMPORTANT:
 
     conn.commit()
 
+
+    # ==========================================
+    # GET CURRENT COMPLETED DAYS
+    # ==========================================
+
+    cursor.execute(
+        """
+        SELECT day_number
+        FROM progress
+        WHERE plan_id = ?
+        AND completed = 1
+        """,
+        (plan_id,)
+    )
+
+    completed_days = [
+        row["day_number"]
+        for row in cursor.fetchall()
+    ]
+
+
     conn.close()
 
 
     # ==========================================
-    # SEND PLAN TO HTML
+    # CREATE PLAN OBJECT
+    # ==========================================
+
+    plan = {
+
+        "id": plan_id,
+
+        "exam_date": str(exam_day),
+
+        "days_remaining": days_remaining,
+
+        "study_hours": study_hours,
+
+        "days": ai_plan["days"],
+
+        "revision_strategy":
+        ai_plan["revision_strategy"],
+
+        "completed_days":
+        completed_days
+    }
+
+
+    # ==========================================
+    # SEND TO HTML
     # ==========================================
 
     return render_template(
         "plan.html",
         plan=plan
     )
+
+
+# ==========================================
+# UPDATE PROGRESS
+# ==========================================
+
+@app.route("/toggle-progress", methods=["POST"])
+def toggle_progress():
+
+    data = request.get_json()
+
+    plan_id = data.get("plan_id")
+
+    day_number = data.get("day_number")
+
+    completed = data.get("completed")
+
+
+    # Validate data
+    if plan_id is None or day_number is None or completed is None:
+
+        return jsonify({
+            "success": False,
+            "message": "Invalid request data."
+        }), 400
+
+
+    conn = get_db()
+
+    cursor = conn.cursor()
+
+
+    # Check if progress record exists
+    cursor.execute(
+        """
+        SELECT id
+        FROM progress
+        WHERE plan_id = ?
+        AND day_number = ?
+        """,
+        (
+            plan_id,
+            day_number
+        )
+    )
+
+    record = cursor.fetchone()
+
+
+    if record is None:
+
+        conn.close()
+
+        return jsonify({
+            "success": False,
+            "message": "Progress record not found."
+        }), 404
+
+
+    # Update completion status
+    cursor.execute(
+        """
+        UPDATE progress
+        SET completed = ?
+        WHERE plan_id = ?
+        AND day_number = ?
+        """,
+        (
+            1 if completed else 0,
+            plan_id,
+            day_number
+        )
+    )
+
+
+    conn.commit()
+
+
+    # Get updated progress count
+    cursor.execute(
+        """
+        SELECT COUNT(*) AS completed_count
+        FROM progress
+        WHERE plan_id = ?
+        AND completed = 1
+        """,
+        (plan_id,)
+    )
+
+    completed_count = cursor.fetchone()["completed_count"]
+
+
+    cursor.execute(
+        """
+        SELECT COUNT(*) AS total_count
+        FROM progress
+        WHERE plan_id = ?
+        """,
+        (plan_id,)
+    )
+
+    total_count = cursor.fetchone()["total_count"]
+
+
+    conn.close()
+
+
+    # Calculate percentage
+    if total_count == 0:
+
+        percentage = 0
+
+    else:
+
+        percentage = (
+            completed_count / total_count
+        ) * 100
+
+
+    return jsonify({
+
+        "success": True,
+
+        "completed_count": completed_count,
+
+        "total_count": total_count,
+
+        "percentage": percentage
+
+    })
 
 
 # ==========================================

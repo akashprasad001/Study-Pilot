@@ -2,17 +2,25 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>StudyPilot - Your Study Plan</title>
 
+
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
 
         body {
             font-family: Arial, sans-serif;
@@ -20,27 +28,34 @@
             color: #1f2937;
         }
 
+
         .container {
             max-width: 1000px;
             margin: auto;
             padding: 35px 20px;
         }
 
+
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
+
 
         .header h1 {
             font-size: 36px;
             margin-bottom: 10px;
         }
 
+
         .header p {
             color: #6b7280;
         }
 
-        /* Summary */
+
+        /* =========================
+           SUMMARY
+        ========================= */
 
         .summary {
             display: grid;
@@ -48,6 +63,7 @@
             gap: 15px;
             margin-bottom: 25px;
         }
+
 
         .summary-card {
             background: white;
@@ -57,10 +73,12 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
         }
 
+
         .summary-card .icon {
             font-size: 28px;
             margin-bottom: 8px;
         }
+
 
         .summary-card h3 {
             font-size: 14px;
@@ -68,12 +86,16 @@
             margin-bottom: 5px;
         }
 
+
         .summary-card p {
             font-size: 20px;
             font-weight: bold;
         }
 
-        /* Progress */
+
+        /* =========================
+           PROGRESS
+        ========================= */
 
         .progress-card {
             background: white;
@@ -83,6 +105,7 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
         }
 
+
         .progress-top {
             display: flex;
             justify-content: space-between;
@@ -90,13 +113,16 @@
             margin-bottom: 12px;
         }
 
+
         .progress-top h2 {
             font-size: 20px;
         }
 
+
         #progress-text {
             font-weight: bold;
         }
+
 
         .progress-bar {
             width: 100%;
@@ -106,6 +132,7 @@
             overflow: hidden;
         }
 
+
         .progress-fill {
             height: 100%;
             width: 0%;
@@ -114,14 +141,20 @@
             transition: width 0.3s ease;
         }
 
-        /* Section */
+
+        /* =========================
+           SECTION
+        ========================= */
 
         .section-title {
             margin: 30px 0 15px;
             font-size: 24px;
         }
 
-        /* Day Card */
+
+        /* =========================
+           DAY CARD
+        ========================= */
 
         .day-card {
             background: white;
@@ -133,10 +166,12 @@
             transition: 0.2s;
         }
 
+
         .day-card.completed {
             border-left-color: #16a34a;
             opacity: 0.85;
         }
+
 
         .day-header {
             display: flex;
@@ -145,14 +180,17 @@
             margin-bottom: 18px;
         }
 
+
         .day-header h2 {
             font-size: 21px;
         }
+
 
         .date {
             color: #6b7280;
             font-weight: bold;
         }
+
 
         .topic {
             font-size: 18px;
@@ -160,17 +198,20 @@
             margin-bottom: 18px;
         }
 
+
         .details {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
+
         .detail {
             background: #f8fafc;
             padding: 14px;
             border-radius: 10px;
         }
+
 
         .detail span {
             display: block;
@@ -179,9 +220,11 @@
             margin-bottom: 5px;
         }
 
+
         .detail strong {
             font-size: 15px;
         }
+
 
         .revision {
             margin-top: 12px;
@@ -190,13 +233,17 @@
             border-radius: 10px;
         }
 
-        /* Complete Button */
+
+        /* =========================
+           COMPLETE BUTTON
+        ========================= */
 
         .complete-section {
             margin-top: 18px;
             display: flex;
             justify-content: flex-end;
         }
+
 
         .complete-button {
             border: none;
@@ -208,16 +255,27 @@
             cursor: pointer;
         }
 
+
         .complete-button:hover {
             background: #e0e7ff;
         }
+
+
+        .complete-button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
 
         .day-card.completed .complete-button {
             background: #dcfce7;
             color: #15803d;
         }
 
-        /* Strategy */
+
+        /* =========================
+           STRATEGY
+        ========================= */
 
         .strategy {
             background: white;
@@ -227,12 +285,16 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
         }
 
+
         .strategy p {
             margin-top: 10px;
             line-height: 1.6;
         }
 
-        /* Bottom Button */
+
+        /* =========================
+           BOTTOM BUTTON
+        ========================= */
 
         .button {
             display: block;
@@ -249,11 +311,15 @@
             text-align: center;
         }
 
+
         .button:hover {
             background: #4338ca;
         }
 
-        /* Mobile */
+
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-width: 700px) {
 
@@ -261,9 +327,11 @@
                 grid-template-columns: 1fr;
             }
 
+
             .details {
                 grid-template-columns: 1fr;
             }
+
 
             .day-header {
                 flex-direction: column;
@@ -271,297 +339,551 @@
                 gap: 5px;
             }
 
+
             .header h1 {
                 font-size: 30px;
             }
+
 
             .complete-section {
                 justify-content: stretch;
             }
 
+
             .complete-button {
                 width: 100%;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
 
-        <!-- Header -->
-
-        <div class="header">
-
-            <h1>📚 StudyPilot</h1>
-
-            <p>Your personalized AI study plan</p>
-
-        </div>
+<div
+    class="container"
+    data-plan-id="{{ plan.id }}"
+>
 
 
-        <!-- Summary -->
+    <!-- HEADER -->
 
-        <div class="summary">
+    <div class="header">
 
-            <div class="summary-card">
+        <h1>📚 StudyPilot</h1>
 
-                <div class="icon">📅</div>
+        <p>
+            Your personalized AI study plan
+        </p>
 
-                <h3>Exam Date</h3>
+    </div>
 
-                <p>{{ plan.exam_date }}</p>
 
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+
+        <div class="summary-card">
+
+            <div class="icon">
+                📅
             </div>
 
-
-            <div class="summary-card">
-
-                <div class="icon">⏳</div>
-
-                <h3>Days Available</h3>
-
-                <p>{{ plan.days_remaining }}</p>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="icon">⏰</div>
-
-                <h3>Daily Study</h3>
-
-                <p>{{ plan.study_hours }} hrs</p>
-
-            </div>
-
-        </div>
-
-
-        <!-- Progress -->
-
-        <div class="progress-card">
-
-            <div class="progress-top">
-
-                <h2>📊 Your Progress</h2>
-
-                <span id="progress-text">
-                    0 / {{ plan.days|length }}
-                </span>
-
-            </div>
-
-            <div class="progress-bar">
-
-                <div
-                    class="progress-fill"
-                    id="progress-fill">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- Study Plan -->
-
-        <h2 class="section-title">
-            🎯 Your Study Plan
-        </h2>
-
-
-        <!-- Daily Plans -->
-
-        {% for day in plan.days %}
-
-        <div
-            class="day-card"
-            data-day="{{ day.day }}">
-
-            <div class="day-header">
-
-                <h2>
-                    Day {{ day.day }}
-                </h2>
-
-                <div class="date">
-                    {{ day.date }}
-                </div>
-
-            </div>
-
-
-            <div class="topic">
-
-                📖 {{ day.topic }}
-
-            </div>
-
-
-            <div class="details">
-
-                <div class="detail">
-
-                    <span>📚 Study Time</span>
-
-                    <strong>
-                        {{ day.study_time }}
-                    </strong>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <span>💻 Practice</span>
-
-                    <strong>
-                        {{ day.practice }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="revision">
-
-                🔄 <strong>Revision:</strong>
-
-                {{ day.revision }}
-
-            </div>
-
-
-            <!-- Complete Button -->
-
-            <div class="complete-section">
-
-                <button
-                    class="complete-button"
-                    onclick="toggleComplete({{ day.day }})">
-
-                    ☐ Mark Complete
-
-                </button>
-
-            </div>
-
-        </div>
-
-        {% endfor %}
-
-
-        <!-- Revision Strategy -->
-
-        <div class="strategy">
-
-            <h2>🧠 Revision Strategy</h2>
+            <h3>
+                Exam Date
+            </h3>
 
             <p>
-                {{ plan.revision_strategy }}
+                {{ plan.exam_date }}
             </p>
 
         </div>
 
 
-        <a href="/" class="button">
-            ← Create Another Study Plan
-        </a>
+        <div class="summary-card">
+
+            <div class="icon">
+                ⏳
+            </div>
+
+            <h3>
+                Days Available
+            </h3>
+
+            <p>
+                {{ plan.days_remaining }}
+            </p>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="icon">
+                ⏰
+            </div>
+
+            <h3>
+                Daily Study
+            </h3>
+
+            <p>
+                {{ plan.study_hours }} hrs
+            </p>
+
+        </div>
 
     </div>
 
 
-    <!-- Progress JavaScript -->
+    <!-- PROGRESS -->
 
-    <script>
+    <div class="progress-card">
 
-        const totalDays = {{ plan.days|length }};
+        <div class="progress-top">
 
-        const storageKey = "studypilot_progress";
+            <h2>
+                📊 Your Progress
+            </h2>
 
-        let completedDays =
-            JSON.parse(localStorage.getItem(storageKey)) || [];
+            <span id="progress-text">
+                0 / 0
+            </span>
 
-
-        function updateProgress() {
-
-            const completedCount = completedDays.length;
-
-            const percentage =
-                totalDays === 0
-                    ? 0
-                    : (completedCount / totalDays) * 100;
+        </div>
 
 
-            document.getElementById("progress-text").innerText =
-                `${completedCount} / ${totalDays}`;
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="progress-fill"
+            ></div>
+
+        </div>
+
+    </div>
 
 
-            document.getElementById("progress-fill").style.width =
-                `${percentage}%`;
+    <!-- STUDY PLAN -->
+
+    <h2 class="section-title">
+        🎯 Your Study Plan
+    </h2>
 
 
-            document.querySelectorAll(".day-card").forEach(card => {
+    <!-- DAILY PLANS -->
 
-                const day =
-                    Number(card.dataset.day);
+    {% for day in plan.days %}
 
-                const button =
-                    card.querySelector(".complete-button");
-
-
-                if (completedDays.includes(day)) {
-
-                    card.classList.add("completed");
-
-                    button.innerText =
-                        "✅ Completed";
-
-                } else {
-
-                    card.classList.remove("completed");
-
-                    button.innerText =
-                        "☐ Mark Complete";
-
-                }
-
-            });
+    <div
+        class="day-card"
+        data-day="{{ day.day }}"
+        data-completed="{% if day.day in plan.completed_days %}true{% else %}false{% endif %}"
+    >
 
 
-            localStorage.setItem(
-                storageKey,
-                JSON.stringify(completedDays)
-            );
+        <div class="day-header">
+
+            <h2>
+                Day {{ day.day }}
+            </h2>
+
+            <div class="date">
+                {{ day.date }}
+            </div>
+
+        </div>
+
+
+        <div class="topic">
+
+            📖 {{ day.topic }}
+
+        </div>
+
+
+        <div class="details">
+
+
+            <div class="detail">
+
+                <span>
+                    📚 Study Time
+                </span>
+
+                <strong>
+                    {{ day.study_time }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span>
+                    💻 Practice
+                </span>
+
+                <strong>
+                    {{ day.practice }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="revision">
+
+            🔄 <strong>Revision:</strong>
+
+            {{ day.revision }}
+
+        </div>
+
+
+        <!-- COMPLETE BUTTON -->
+
+        <div class="complete-section">
+
+            <button
+                type="button"
+                class="complete-button"
+            >
+                ☐ Mark Complete
+            </button>
+
+        </div>
+
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- REVISION STRATEGY -->
+
+    <div class="strategy">
+
+        <h2>
+            🧠 Revision Strategy
+        </h2>
+
+        <p>
+            {{ plan.revision_strategy }}
+        </p>
+
+    </div>
+
+
+    <a
+        href="/"
+        class="button"
+    >
+        ← Create Another Study Plan
+    </a>
+
+
+</div>
+
+
+<script>
+
+    /*
+    ==========================================
+    GET DATA FROM HTML
+    ==========================================
+    */
+
+    const container =
+        document.querySelector(".container");
+
+    const planId =
+        Number(
+            container.dataset.planId
+        );
+
+
+    const dayCards =
+        document.querySelectorAll(".day-card");
+
+
+    const totalDays =
+        dayCards.length;
+
+
+    let completedDays = [];
+
+
+    /*
+    ==========================================
+    FIND COMPLETED DAYS
+    ==========================================
+    */
+
+    dayCards.forEach(function(card) {
+
+        const day =
+            Number(card.dataset.day);
+
+
+        const completed =
+            card.dataset.completed === "true";
+
+
+        if (completed) {
+
+            completedDays.push(day);
+
+        }
+
+    });
+
+
+    /*
+    ==========================================
+    UPDATE PROGRESS UI
+    ==========================================
+    */
+
+    function updateProgress() {
+
+        const completedCount =
+            completedDays.length;
+
+
+        let percentage = 0;
+
+
+        if (totalDays > 0) {
+
+            percentage =
+                (completedCount / totalDays) * 100;
+
         }
 
 
-        function toggleComplete(day) {
+        document.getElementById(
+            "progress-text"
+        ).innerText =
+            completedCount + " / " + totalDays;
 
-            if (completedDays.includes(day)) {
 
-                completedDays =
-                    completedDays.filter(
-                        item => item !== day
-                    );
+        document.getElementById(
+            "progress-fill"
+        ).style.width =
+            percentage + "%";
 
-            } else {
 
-                completedDays.push(day);
+        dayCards.forEach(function(card) {
+
+            const day =
+                Number(card.dataset.day);
+
+
+            const button =
+                card.querySelector(
+                    ".complete-button"
+                );
+
+
+            if (
+                completedDays.includes(day)
+            ) {
+
+                card.classList.add(
+                    "completed"
+                );
+
+
+                button.innerText =
+                    "✅ Completed";
 
             }
 
+            else {
+
+                card.classList.remove(
+                    "completed"
+                );
+
+
+                button.innerText =
+                    "☐ Mark Complete";
+
+            }
+
+        });
+
+    }
+
+
+    /*
+    ==========================================
+    TOGGLE COMPLETE
+    ==========================================
+    */
+
+    async function toggleComplete(day, button) {
+
+        const currentlyCompleted =
+            completedDays.includes(day);
+
+
+        const newStatus =
+            !currentlyCompleted;
+
+
+        button.disabled = true;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/toggle-progress",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            plan_id: planId,
+
+                            day_number: day,
+
+                            completed: newStatus
+
+                        })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                alert(
+                    data.message ||
+                    "Could not update progress."
+                );
+
+                return;
+
+            }
+
+
+            /*
+            Update local page state
+            */
+
+            if (newStatus) {
+
+                if (
+                    !completedDays.includes(day)
+                ) {
+
+                    completedDays.push(day);
+
+                }
+
+            }
+
+            else {
+
+                completedDays =
+                    completedDays.filter(
+                        function(item) {
+                            return item !== day;
+                        }
+                    );
+
+            }
+
+
             updateProgress();
+
         }
 
+        catch (error) {
 
-        updateProgress();
+            console.error(error);
 
-    </script>
+            alert(
+                "Server error. Please try again."
+            );
+
+        }
+
+        finally {
+
+            button.disabled = false;
+
+        }
+
+    }
+
+
+    /*
+    ==========================================
+    ADD BUTTON EVENTS
+    ==========================================
+    */
+
+    document
+        .querySelectorAll(".complete-button")
+        .forEach(function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    const card =
+                        button.closest(".day-card");
+
+
+                    const day =
+                        Number(
+                            card.dataset.day
+                        );
+
+
+                    toggleComplete(
+                        day,
+                        button
+                    );
+
+                }
+            );
+
+        });
+
+
+    /*
+    ==========================================
+    INITIAL UI
+    ==========================================
+    */
+
+    updateProgress();
+
+</script>
+
 
 </body>
 
