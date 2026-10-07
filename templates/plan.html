@@ -20,319 +20,1044 @@
             padding: 0;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            color: #1f2937;
+        :root {
+            --bg: #f6f7fb;
+            --white: #ffffff;
+            --text: #111827;
+            --muted: #667085;
+            --border: #e5e7eb;
+
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+
+            --green: #16a34a;
+            --green-light: #dcfce7;
+
+            --shadow:
+                0 12px 35px rgba(15, 23, 42, 0.07);
+
+            --shadow-small:
+                0 6px 20px rgba(15, 23, 42, 0.05);
         }
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(99, 102, 241, 0.08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(124, 58, 237, 0.06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 35px 20px;
+
+            width:
+                min(
+                    1080px,
+                    calc(100% - 32px)
+                );
+
+            margin: 0 auto;
+
+            padding:
+                22px 0 50px;
         }
 
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 12px 14px;
+
+            margin-bottom: 48px;
+
+            background:
+                rgba(255,255,255,.88);
+
+            border:
+                1px solid rgba(
+                    229,
+                    231,
+                    235,
+                    .9
+                );
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 6px 24px
+                rgba(15,23,42,.05);
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+        .nav-logo {
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            letter-spacing: -.4px;
+
+            white-space: nowrap;
+        }
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+        .nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 38px;
+
+            padding: 8px 13px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            border:
+                1px solid transparent;
+
+            transition: .2s ease;
+        }
+
+        .nav-button:hover {
+
+            transform:
+                translateY(-1px);
+        }
+
+        .history-button {
+
+            color: #4338ca;
+
+            background:
+                #ffffff;
+
+            border-color:
+                #c7d2fe;
+        }
+
+        .history-button:hover {
+
+            background:
+                #eef2ff;
+
+            border-color:
+                #a5b4fc;
+        }
+
+        .logout-button {
+
+            color: #b91c1c;
+
+            background:
+                #ffffff;
+
+            border-color:
+                #fecaca;
+        }
+
+        .logout-button:hover {
+
+            background:
+                #fef2f2;
+        }
+
+        .user-button {
+
+            color: #475467;
+
+            background:
+                #f8fafc;
+
+            border-color:
+                var(--border);
+
+            cursor: default;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
         .header {
+
             text-align: center;
-            margin-bottom: 30px;
+
+            max-width: 760px;
+
+            margin:
+                0 auto 32px;
         }
 
         .header h1 {
-            font-size: 36px;
+
+            font-size:
+                clamp(
+                    32px,
+                    5vw,
+                    46px
+                );
+
+            line-height: 1.1;
+
+            letter-spacing:
+                -1.5px;
+
             margin-bottom: 10px;
         }
 
         .header p {
-            color: #6b7280;
+
+            color:
+                var(--muted);
+
+            font-size: 16px;
         }
 
+
+        /* =========================
+           SUMMARY CARDS
+        ========================= */
+
         .summary {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 20px;
         }
 
         .summary-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,.95);
+
+            padding: 22px 18px;
+
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 17px;
+
+            box-shadow:
+                var(--shadow-small);
+
+            transition: .2s ease;
+        }
+
+        .summary-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                var(--shadow);
         }
 
         .summary-card .icon {
-            font-size: 28px;
-            margin-bottom: 8px;
+
+            width: 48px;
+
+            height: 48px;
+
+            display: grid;
+
+            place-items: center;
+
+            margin:
+                0 auto 10px;
+
+            font-size: 22px;
+
+            background:
+                var(--primary-light);
+
+            border-radius: 13px;
         }
 
         .summary-card h3 {
-            font-size: 14px;
-            color: #6b7280;
+
+            font-size: 13px;
+
+            color:
+                var(--muted);
+
             margin-bottom: 5px;
+
+            font-weight: 700;
         }
 
         .summary-card p {
-            font-size: 20px;
-            font-weight: bold;
+
+            font-size: 21px;
+
+            font-weight: 800;
         }
 
+
+        /* =========================
+           PROGRESS
+        ========================= */
+
         .progress-card {
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+
+            background:
+                rgba(255,255,255,.96);
+
+            padding: 24px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 18px;
+
+            margin-bottom: 22px;
+
+            box-shadow:
+                var(--shadow-small);
         }
 
         .progress-top {
+
             display: flex;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
+
             align-items: center;
+
+            gap: 15px;
+
             margin-bottom: 12px;
         }
 
         .progress-top h2 {
-            font-size: 20px;
+
+            font-size: 19px;
+
+            letter-spacing: -.3px;
         }
 
         #progress-text {
-            font-weight: bold;
+
+            color:
+                var(--primary);
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            background:
+                var(--primary-light);
+
+            padding:
+                6px 10px;
+
+            border-radius: 999px;
         }
 
         .progress-bar {
+
             width: 100%;
-            height: 14px;
-            background: #e5e7eb;
-            border-radius: 20px;
+
+            height: 12px;
+
+            background:
+                #e5e7eb;
+
+            border-radius: 999px;
+
             overflow: hidden;
         }
 
         .progress-fill {
+
             height: 100%;
+
             width: 0%;
-            background: #4f46e5;
-            border-radius: 20px;
-            transition: width .3s ease;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            border-radius: 999px;
+
+            transition:
+                width .35s ease;
         }
 
-        /* QUIZ */
+
+        /* =========================
+           QUIZ CARD
+        ========================= */
 
         .quiz-card {
-            background: white;
+
+            background:
+                rgba(255,255,255,.96);
+
             padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 18px;
+
+            margin-bottom: 32px;
+
+            box-shadow:
+                var(--shadow-small);
         }
 
         .quiz-card h2 {
-            margin-bottom: 8px;
+
+            font-size: 20px;
+
+            margin-bottom: 7px;
         }
 
         .quiz-card p {
-            color: #6b7280;
+
+            color:
+                var(--muted);
+
+            font-size: 14px;
+
             margin-bottom: 18px;
         }
 
         .quiz-form {
+
             display: flex;
-            gap: 12px;
+
             align-items: center;
+
+            gap: 12px;
         }
 
         .quiz-select {
+
             flex: 1;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 9px;
-            font-size: 15px;
-            background: white;
+
+            min-height: 46px;
+
+            padding:
+                10px 13px;
+
+            border:
+                1px solid #d0d5dd;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            background:
+                #ffffff;
+
+            color:
+                var(--text);
+
+            outline: none;
+
+            transition: .2s ease;
+        }
+
+        .quiz-select:focus {
+
+            border-color:
+                #818cf8;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .12
+                );
         }
 
         .quiz-button {
+
+            min-height: 46px;
+
+            padding:
+                10px 18px;
+
             border: none;
-            padding: 12px 18px;
-            border-radius: 9px;
-            background: #4f46e5;
-            color: white;
-            font-weight: bold;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color:
+                #ffffff;
+
+            font-weight: 800;
+
             cursor: pointer;
+
+            box-shadow:
+                0 7px 16px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .18
+                );
+
+            transition: .2s ease;
         }
 
         .quiz-button:hover {
-            background: #4338ca;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+
+            transform:
+                translateY(-1px);
         }
+
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
 
         .section-title {
-            margin: 30px 0 15px;
+
+            margin:
+                34px 0 16px;
+
             font-size: 24px;
+
+            letter-spacing:
+                -.5px;
         }
 
+
+        /* =========================
+           DAY CARD
+        ========================= */
+
         .day-card {
-            background: white;
-            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,.96);
+
+            border-radius: 17px;
+
             padding: 25px;
-            margin-bottom: 18px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
-            border-left: 5px solid #4f46e5;
-            transition: .2s;
+
+            margin-bottom: 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-left:
+                5px solid var(--primary);
+
+            box-shadow:
+                var(--shadow-small);
+
+            transition: .2s ease;
+        }
+
+        .day-card:hover {
+
+            box-shadow:
+                var(--shadow);
+
+            transform:
+                translateY(-1px);
         }
 
         .day-card.completed {
-            border-left-color: #16a34a;
-            opacity: .85;
+
+            border-left-color:
+                var(--green);
+
+            background:
+                rgba(
+                    240,
+                    253,
+                    244,
+                    .65
+                );
         }
 
         .day-header {
+
             display: flex;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
+
             align-items: center;
+
+            gap: 15px;
+
             margin-bottom: 18px;
         }
 
         .day-header h2 {
-            font-size: 21px;
+
+            font-size: 20px;
+
+            letter-spacing:
+                -.3px;
         }
 
         .date {
-            color: #6b7280;
-            font-weight: bold;
+
+            color:
+                var(--muted);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            background:
+                #f8fafc;
+
+            padding:
+                6px 10px;
+
+            border-radius: 8px;
         }
 
         .topic {
+
             font-size: 18px;
-            font-weight: bold;
+
+            font-weight: 800;
+
             margin-bottom: 18px;
+
+            color:
+                #1f2937;
         }
 
+
+        /* =========================
+           DAY DETAILS
+        ========================= */
+
         .details {
+
             display: grid;
-            grid-template-columns: 1fr 1fr;
+
+            grid-template-columns:
+                1fr 1fr;
+
             gap: 12px;
         }
 
         .detail {
-            background: #f8fafc;
-            padding: 14px;
-            border-radius: 10px;
+
+            background:
+                #f8fafc;
+
+            padding: 15px;
+
+            border:
+                1px solid #eef0f4;
+
+            border-radius: 11px;
         }
 
         .detail span {
+
             display: block;
-            color: #6b7280;
-            font-size: 13px;
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
             margin-bottom: 5px;
+
+            font-weight: 600;
         }
 
         .detail strong {
-            font-size: 15px;
+
+            font-size: 14px;
         }
+
+
+        /* =========================
+           REVISION
+        ========================= */
 
         .revision {
+
             margin-top: 12px;
-            background: #f8fafc;
-            padding: 14px;
-            border-radius: 10px;
+
+            background:
+                #f8fafc;
+
+            padding: 15px;
+
+            border:
+                1px solid #eef0f4;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+
+            line-height: 1.6;
         }
 
+
+        /* =========================
+           COMPLETE BUTTON
+        ========================= */
+
         .complete-section {
+
             margin-top: 18px;
+
             display: flex;
+
             justify-content: flex-end;
         }
 
         .complete-button {
+
             border: none;
-            padding: 10px 16px;
-            border-radius: 9px;
-            background: #eef2ff;
-            color: #4f46e5;
-            font-weight: bold;
+
+            padding:
+                10px 16px;
+
+            border-radius: 10px;
+
+            background:
+                var(--primary-light);
+
+            color:
+                var(--primary);
+
+            font-weight: 800;
+
             cursor: pointer;
+
+            transition: .2s ease;
         }
 
         .complete-button:hover {
-            background: #e0e7ff;
+
+            background:
+                #e0e7ff;
+
+            transform:
+                translateY(-1px);
         }
 
         .complete-button:disabled {
+
             opacity: .6;
+
             cursor: wait;
         }
 
-        .day-card.completed .complete-button {
-            background: #dcfce7;
-            color: #15803d;
+        .day-card.completed
+        .complete-button {
+
+            background:
+                var(--green-light);
+
+            color:
+                #15803d;
         }
 
+
+        /* =========================
+           STRATEGY
+        ========================= */
+
         .strategy {
-            background: white;
+
+            background:
+                rgba(255,255,255,.96);
+
             padding: 25px;
-            border-radius: 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 17px;
+
             margin-top: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+
+            box-shadow:
+                var(--shadow-small);
+        }
+
+        .strategy h2 {
+
+            font-size: 20px;
+
+            margin-bottom: 8px;
         }
 
         .strategy p {
-            margin-top: 10px;
-            line-height: 1.6;
+
+            color:
+                #475467;
+
+            line-height: 1.7;
+
+            font-size: 14px;
         }
 
+
+        /* =========================
+           BOTTOM BUTTON
+        ========================= */
+
         .button {
+
             display: block;
+
             width: 100%;
-            margin-top: 30px;
-            padding: 15px;
+
+            margin-top: 28px;
+
+            padding: 14px;
+
             border: none;
-            border-radius: 10px;
-            background: #4f46e5;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color:
+                #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
             text-decoration: none;
+
             text-align: center;
+
+            box-shadow:
+                0 8px 18px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .18
+                );
+
+            transition: .2s ease;
         }
 
         .button:hover {
-            background: #4338ca;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+
+            transform:
+                translateY(-1px);
         }
 
-        @media (max-width: 700px) {
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 760px) {
+
+            .container {
+
+                width:
+                    min(
+                        100% - 22px,
+                        680px
+                    );
+
+                padding-top: 12px;
+            }
+
+            .navbar {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+
+                margin-bottom: 38px;
+            }
+
+            .nav-logo {
+
+                text-align: center;
+
+                font-size: 18px;
+            }
+
+            .nav-links {
+
+                justify-content:
+                    center;
+            }
+
+            .nav-button {
+
+                font-size: 12px;
+
+                padding:
+                    7px 10px;
+
+                min-height: 36px;
+            }
 
             .summary {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
             }
 
             .details {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
             }
 
             .day-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
 
-            .header h1 {
-                font-size: 30px;
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+
+                gap: 8px;
             }
 
             .complete-section {
-                justify-content: stretch;
+
+                justify-content:
+                    stretch;
             }
 
             .complete-button {
+
                 width: 100%;
             }
 
             .quiz-form {
-                flex-direction: column;
-                align-items: stretch;
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
             }
 
             .quiz-button {
+
                 width: 100%;
+            }
+
+            .header h1 {
+
+                font-size: 34px;
             }
 
         }
@@ -344,27 +1069,132 @@
 
 <body>
 
+
 <div
     class="container"
     data-plan-id="{{ plan.id }}"
 >
 
-    <!-- HEADER -->
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <div class="navbar">
+
+
+        <div class="nav-logo">
+
+            🎓 StudyPilot
+
+        </div>
+
+
+        <div class="nav-links">
+
+
+            <a
+                href="/"
+                class="nav-button history-button"
+            >
+
+                🏠 Home
+
+            </a>
+
+
+            <a
+                href="/weak-topics"
+                class="nav-button history-button"
+            >
+
+                🧠 Weak Topics
+
+            </a>
+
+
+            <a
+                href="/adaptive-plan"
+                class="nav-button history-button"
+            >
+
+                🔄 Adaptive Plan
+
+            </a>
+
+
+            <a
+                href="/quiz-history"
+                class="nav-button history-button"
+            >
+
+                📊 Quiz History
+
+            </a>
+
+
+            <span class="nav-button user-button">
+
+                👋 {{ session.get("user_name") }}
+
+            </span>
+
+
+            <a
+                href="/notes"
+                class="nav-button history-button"
+            >
+
+                📝 Notes PDF
+
+            </a>
+
+
+            <a
+                href="/logout"
+                class="nav-button logout-button"
+            >
+
+                Logout
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
 
     <div class="header">
 
-        <h1>📚 StudyPilot</h1>
+        <h1>
+
+            📚 StudyPilot
+
+        </h1>
+
 
         <p>
+
             Your personalized AI study plan
+
         </p>
 
     </div>
 
 
-    <!-- SUMMARY -->
+
+    <!-- =========================
+         SUMMARY
+    ========================= -->
 
     <div class="summary">
+
 
         <div class="summary-card">
 
@@ -416,24 +1246,35 @@
 
         </div>
 
+
     </div>
 
 
-    <!-- PROGRESS -->
+
+    <!-- =========================
+         PROGRESS
+    ========================= -->
 
     <div class="progress-card">
+
 
         <div class="progress-top">
 
             <h2>
+
                 📊 Your Progress
+
             </h2>
 
+
             <span id="progress-text">
+
                 0 / 0
+
             </span>
 
         </div>
+
 
         <div class="progress-bar">
 
@@ -444,20 +1285,30 @@
 
         </div>
 
+
     </div>
 
 
-    <!-- QUIZ -->
+
+    <!-- =========================
+         QUIZ
+    ========================= -->
 
     <div class="quiz-card">
 
+
         <h2>
+
             🤖 Test Your Knowledge
+
         </h2>
 
+
         <p>
+
             Choose a topic and let StudyPilot generate
             a 5-question AI quiz.
+
         </p>
 
 
@@ -466,6 +1317,7 @@
             action="/generate-quiz"
             method="POST"
         >
+
 
             <input
                 type="hidden"
@@ -480,17 +1332,24 @@
                 required
             >
 
+
                 <option value="">
+
                     Select a topic
+
                 </option>
+
 
                 {% for topic in plan.topics %}
 
                 <option value="{{ topic }}">
+
                     {{ topic }}
+
                 </option>
 
                 {% endfor %}
+
 
             </select>
 
@@ -499,22 +1358,32 @@
                 type="submit"
                 class="quiz-button"
             >
-                Generate Quiz
+
+                🤖 Generate Quiz
+
             </button>
 
+
         </form>
+
 
     </div>
 
 
-    <!-- STUDY PLAN -->
+
+    <!-- =========================
+         STUDY PLAN
+    ========================= -->
 
     <h2 class="section-title">
+
         🎯 Your Study Plan
+
     </h2>
 
 
     {% for day in plan.days %}
+
 
     <div
         class="day-card"
@@ -522,15 +1391,23 @@
         data-completed="{% if day.day in plan.completed_days %}true{% else %}false{% endif %}"
     >
 
+
         <div class="day-header">
 
+
             <h2>
+
                 Day {{ day.day }}
+
             </h2>
 
+
             <div class="date">
+
                 {{ day.date }}
+
             </div>
+
 
         </div>
 
@@ -544,14 +1421,20 @@
 
         <div class="details">
 
+
             <div class="detail">
 
                 <span>
+
                     📚 Study Time
+
                 </span>
 
+
                 <strong>
+
                     {{ day.study_time }}
+
                 </strong>
 
             </div>
@@ -560,14 +1443,20 @@
             <div class="detail">
 
                 <span>
+
                     💻 Practice
+
                 </span>
 
+
                 <strong>
+
                     {{ day.practice }}
+
                 </strong>
 
             </div>
+
 
         </div>
 
@@ -575,6 +1464,7 @@
         <div class="revision">
 
             🔄
+
             <strong>
                 Revision:
             </strong>
@@ -586,71 +1476,108 @@
 
         <div class="complete-section">
 
+
             <button
                 type="button"
                 class="complete-button"
             >
+
                 ☐ Mark Complete
+
             </button>
+
 
         </div>
 
+
     </div>
+
 
     {% endfor %}
 
 
-    <!-- REVISION STRATEGY -->
+
+    <!-- =========================
+         REVISION STRATEGY
+    ========================= -->
 
     <div class="strategy">
 
+
         <h2>
+
             🧠 Revision Strategy
+
         </h2>
 
+
         <p>
+
             {{ plan.revision_strategy }}
+
         </p>
+
 
     </div>
 
 
-    <!-- BACK -->
+
+    <!-- =========================
+         BACK BUTTON
+    ========================= -->
 
     <a
         href="/"
         class="button"
     >
+
         ← Create Another Study Plan
+
     </a>
+
 
 </div>
 
 
+
 <script>
+
 
     const container =
         document.querySelector(".container");
 
+
     const planId =
-        Number(container.dataset.planId);
+        Number(
+            container.dataset.planId
+        );
+
 
     const dayCards =
-        document.querySelectorAll(".day-card");
+        document.querySelectorAll(
+            ".day-card"
+        );
+
 
     const totalDays =
         dayCards.length;
+
 
     let completedDays = [];
 
 
     dayCards.forEach(function(card) {
 
+
         const day =
-            Number(card.dataset.day);
+            Number(
+                card.dataset.day
+            );
+
 
         const completed =
             card.dataset.completed === "true";
+
 
         if (completed) {
 
@@ -661,17 +1588,24 @@
     });
 
 
+
     function updateProgress() {
+
 
         const completedCount =
             completedDays.length;
 
+
         let percentage = 0;
+
 
         if (totalDays > 0) {
 
             percentage =
-                (completedCount / totalDays) * 100;
+                (
+                    completedCount /
+                    totalDays
+                ) * 100;
 
         }
 
@@ -679,6 +1613,7 @@
         document.getElementById(
             "progress-text"
         ).innerText =
+
             completedCount +
             " / " +
             totalDays;
@@ -687,45 +1622,58 @@
         document.getElementById(
             "progress-fill"
         ).style.width =
+
             percentage + "%";
 
 
-        dayCards.forEach(function(card) {
-
-            const day =
-                Number(card.dataset.day);
-
-            const button =
-                card.querySelector(
-                    ".complete-button"
-                );
+        dayCards.forEach(
+            function(card) {
 
 
-            if (
-                completedDays.includes(day)
-            ) {
+                const day =
+                    Number(
+                        card.dataset.day
+                    );
 
-                card.classList.add(
-                    "completed"
-                );
 
-                button.innerText =
-                    "✅ Completed";
+                const button =
+                    card.querySelector(
+                        ".complete-button"
+                    );
 
-            } else {
 
-                card.classList.remove(
-                    "completed"
-                );
+                if (
+                    completedDays.includes(day)
+                ) {
 
-                button.innerText =
-                    "☐ Mark Complete";
+
+                    card.classList.add(
+                        "completed"
+                    );
+
+
+                    button.innerText =
+                        "✅ Completed";
+
+
+                } else {
+
+
+                    card.classList.remove(
+                        "completed"
+                    );
+
+
+                    button.innerText =
+                        "☐ Mark Complete";
+
+                }
 
             }
-
-        });
+        );
 
     }
+
 
 
     async function toggleComplete(
@@ -733,16 +1681,20 @@
         button
     ) {
 
+
         const currentlyCompleted =
             completedDays.includes(day);
 
+
         const newStatus =
             !currentlyCompleted;
+
 
         button.disabled = true;
 
 
         try {
+
 
             const response =
                 await fetch(
@@ -752,8 +1704,10 @@
                         method: "POST",
 
                         headers: {
+
                             "Content-Type":
                                 "application/json"
+
                         },
 
                         body:
@@ -780,10 +1734,12 @@
 
             if (!data.success) {
 
+
                 alert(
                     data.message ||
                     "Could not update progress."
                 );
+
 
                 return;
 
@@ -791,6 +1747,7 @@
 
 
             if (newStatus) {
+
 
                 if (
                     !completedDays.includes(day)
@@ -800,7 +1757,9 @@
 
                 }
 
+
             } else {
+
 
                 completedDays =
                     completedDays.filter(
@@ -819,13 +1778,17 @@
 
         } catch (error) {
 
+
             console.error(error);
+
 
             alert(
                 "Server error. Please try again."
             );
 
+
         } finally {
+
 
             button.disabled = false;
 
@@ -834,38 +1797,50 @@
     }
 
 
+
     document
-        .querySelectorAll(".complete-button")
-        .forEach(function(button) {
+        .querySelectorAll(
+            ".complete-button"
+        )
+        .forEach(
+            function(button) {
 
-            button.addEventListener(
-                "click",
-                function() {
 
-                    const card =
-                        button.closest(
-                            ".day-card"
+                button.addEventListener(
+                    "click",
+                    function() {
+
+
+                        const card =
+                            button.closest(
+                                ".day-card"
+                            );
+
+
+                        const day =
+                            Number(
+                                card.dataset.day
+                            );
+
+
+                        toggleComplete(
+                            day,
+                            button
                         );
 
-                    const day =
-                        Number(
-                            card.dataset.day
-                        );
+                    }
+                );
 
-                    toggleComplete(
-                        day,
-                        button
-                    );
+            }
+        );
 
-                }
-            );
-
-        });
 
 
     updateProgress();
 
+
 </script>
+
 
 </body>
 

@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Weak Topics - StudyPilot</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f6f7fb;
+            --white: #ffffff;
+            --text: #111827;
+            --muted: #667085;
+            --border: #e5e7eb;
+
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+
+            --red: #dc2626;
+            --red-bg: #fef2f2;
+            --red-border: #fecaca;
+
+            --green: #15803d;
+            --green-bg: #f0fdf4;
+            --green-border: #bbf7d0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(99, 102, 241, .08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(124, 58, 237, .06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            width:
+                min(
+                    1100px,
+                    calc(100% - 32px)
+                );
+
+            margin:
+                18px auto 0;
+
+            padding:
+                12px 14px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .90
+                );
+
+            border:
+                1px solid
+                rgba(
+                    229,
+                    231,
+                    235,
+                    .9
+                );
+
+            border-radius:
+                16px;
+
+            box-shadow:
+                0 6px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+
+        .logo {
+
+            font-size:
+                19px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -.4px;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .nav-links {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                flex-end;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                7px;
+        }
+
+
+        .nav-links a {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                7px 10px;
+
+            border:
+                1px solid
+                transparent;
+
+            border-radius:
+                9px;
+
+            color:
+                #475467;
+
+            text-decoration:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            transition:
+                .2s ease;
+        }
+
+
+        .nav-links a:hover {
+
+            color:
+                var(--primary);
+
+            background:
+                var(--primary-light);
+
+            border-color:
+                #c7d2fe;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+
+            width:
+                min(
+                    1000px,
+                    calc(100% - 32px)
+                );
+
+            margin:
+                0 auto;
+
+            padding:
+                48px 0 55px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .page-header {
+
+            margin-bottom:
+                28px;
+        }
+
+
+        .page-header h1 {
+
+            font-size:
+                clamp(
+                    30px,
+                    5vw,
+                    40px
+                );
+
+            letter-spacing:
+                -1px;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .subtitle {
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+
+            max-width:
+                720px;
+        }
+
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .summary {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            padding:
+                20px;
+
+            margin-bottom:
+                28px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                17px;
+
+            box-shadow:
+                0 7px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .045
+                );
+        }
+
+
+        .summary-icon {
+
+            width:
+                48px;
+
+            height:
+                48px;
+
+            flex-shrink:
+                0;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            border-radius:
+                13px;
+
+            background:
+                var(--red-bg);
+
+            border:
+                1px solid
+                var(--red-border);
+
+            font-size:
+                22px;
+        }
+
+
+        .summary-content {
+
+            display:
+                flex;
+
+            align-items:
+                baseline;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                7px;
+        }
+
+
+        .summary strong {
+
+            font-size:
+                28px;
+
+            color:
+                var(--red);
+        }
+
+
+        .summary span {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+        }
+
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section-title {
+
+            font-size:
+                20px;
+
+            letter-spacing:
+                -.3px;
+
+            margin:
+                30px 2px 14px;
+        }
+
+
+        /* =========================
+           TOPIC CARD
+        ========================= */
+
+        .topic-card {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                20px;
+
+            padding:
+                19px 21px;
+
+            margin-bottom:
+                12px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                17px;
+
+            box-shadow:
+                0 7px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .045
+                );
+
+            transition:
+                .2s ease;
+        }
+
+
+        .topic-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 11px 30px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .07
+                );
+        }
+
+
+        .topic-info {
+
+            min-width:
+                0;
+        }
+
+
+        .topic-name {
+
+            font-size:
+                16px;
+
+            font-weight:
+                800;
+
+            margin-bottom:
+                6px;
+
+            word-break:
+                break-word;
+        }
+
+
+        .meta {
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        /* =========================
+           BADGES
+        ========================= */
+
+        .weak-badge,
+        .good-badge {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            padding:
+                5px 9px;
+
+            border-radius:
+                999px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                800;
+        }
+
+
+        .weak-badge {
+
+            background:
+                var(--red-bg);
+
+            color:
+                var(--red);
+
+            border:
+                1px solid
+                var(--red-border);
+        }
+
+
+        .good-badge {
+
+            background:
+                var(--green-bg);
+
+            color:
+                var(--green);
+
+            border:
+                1px solid
+                var(--green-border);
+        }
+
+
+        /* =========================
+           SCORE
+        ========================= */
+
+        .score-box {
+
+            min-width:
+                90px;
+
+            text-align:
+                center;
+
+            padding:
+                10px 12px;
+
+            border-radius:
+                12px;
+
+            background:
+                #f8fafc;
+
+            border:
+                1px solid
+                var(--border);
+        }
+
+
+        .score {
+
+            font-size:
+                22px;
+
+            font-weight:
+                850;
+        }
+
+
+        .score-label {
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .3px;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            padding:
+                50px 25px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                18px;
+
+            text-align:
+                center;
+
+            box-shadow:
+                0 8px 26px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+        }
+
+
+        .empty-icon {
+
+            font-size:
+                43px;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .empty h2 {
+
+            font-size:
+                22px;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .empty p {
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+
+            margin-bottom:
+                18px;
+        }
+
+
+        .back {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                11px 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color:
+                #ffffff;
+
+            text-decoration:
+                none;
+
+            border-radius:
+                10px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            box-shadow:
+                0 7px 17px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .18
+                );
+
+            transition:
+                .2s ease;
+        }
+
+
+        .back:hover {
+
+            transform:
+                translateY(-1px);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+
+            text-align:
+                center;
+
+            color:
+                #98a2b3;
+
+            font-size:
+                12px;
+
+            margin-top:
+                28px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .nav-links {
+
+                justify-content:
+                    flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                margin-top:
+                    11px;
+            }
+
+
+            .nav-links {
+
+                width:
+                    100%;
+
+                display:
+                    grid;
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+            }
+
+
+            .nav-links a {
+
+                background:
+                    #f8fafc;
+
+                border-color:
+                    var(--border);
+
+                text-align:
+                    center;
+            }
+
+
+            .container {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                padding-top:
+                    34px;
+            }
+
+
+            .summary {
+
+                align-items:
+                    flex-start;
+            }
+
+
+            .topic-card {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .score-box {
+
+                width:
+                    100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+
+        📚 StudyPilot
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            🏠 Home
+        </a>
+
+        <a href="/quiz-history">
+            📊 Quiz History
+        </a>
+
+        <a href="/weak-topics">
+            🧠 Weak Topics
+        </a>
+
+        <a href="/adaptive-plan">
+            🔄 Adaptive Plan
+        </a>
+
+        <a href="/notes">
+            📝 Notes PDF
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="container">
+
+
+    <div class="page-header">
+
+        <h1>
+            🧠 Weak Topic Detection
+        </h1>
+
+        <p class="subtitle">
+
+            StudyPilot analyzes your quiz performance
+            and highlights topics that need more practice.
+
+        </p>
+
+    </div>
+
+
+
+    {% if topics %}
+
+
+        <!-- =========================
+             SUMMARY
+        ========================= -->
+
+        <div class="summary">
+
+
+            <div class="summary-icon">
+
+                🎯
+
+            </div>
+
+
+            <div class="summary-content">
+
+                <strong>
+                    {{ weak_topics|length }}
+                </strong>
+
+                <span>
+                    topic(s) currently below the
+                    60% practice threshold.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             WEAK TOPICS
+        ========================= -->
+
+        <h2 class="section-title">
+
+            🎯 Topics That Need Attention
+
+        </h2>
+
+
+        {% if weak_topics %}
+
+
+            {% for topic in weak_topics %}
+
+
+                <div class="topic-card">
+
+
+                    <div class="topic-info">
+
+
+                        <div class="topic-name">
+
+                            📖 {{ topic[0] }}
+
+                        </div>
+
+
+                        <div class="meta">
+
+                            {{ topic[1] }} attempt(s)
+                            ·
+                            {{ topic[2] }}/{{ topic[3] }} correct
+
+                        </div>
+
+
+                        <span class="weak-badge">
+
+                            ⚠ Needs Practice
+
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="score-box">
+
+
+                        <div class="score">
+
+                            {{ topic[4] }}%
+
+                        </div>
+
+
+                        <div class="score-label">
+
+                            Score
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <div class="empty">
+
+
+                <div class="empty-icon">
+
+                    🎉
+
+                </div>
+
+
+                <h2>
+
+                    No Weak Topics Detected
+
+                </h2>
+
+
+                <p>
+
+                    Your current quiz averages are
+                    60% or above.
+
+                </p>
+
+
+            </div>
+
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             ALL TOPICS
+        ========================= -->
+
+        <h2 class="section-title">
+
+            📊 All Topic Performance
+
+        </h2>
+
+
+        {% for topic in topics %}
+
+
+            <div class="topic-card">
+
+
+                <div class="topic-info">
+
+
+                    <div class="topic-name">
+
+                        📖 {{ topic[0] }}
+
+                    </div>
+
+
+                    <div class="meta">
+
+                        {{ topic[1] }} attempt(s)
+                        ·
+                        {{ topic[2] }}/{{ topic[3] }} correct
+
+                    </div>
+
+
+                    {% if topic[4] < 60 %}
+
+                        <span class="weak-badge">
+
+                            ⚠ Needs Practice
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="good-badge">
+
+                            ✓ On Track
+
+                        </span>
+
+                    {% endif %}
+
+
+                </div>
+
+
+                <div class="score-box">
+
+
+                    <div class="score">
+
+                        {{ topic[4] }}%
+
+                    </div>
+
+
+                    <div class="score-label">
+
+                        Score
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        {% endfor %}
+
+
+    {% else %}
+
+
+        <!-- =========================
+             NO DATA
+        ========================= -->
+
+        <div class="empty">
+
+
+            <div class="empty-icon">
+
+                📭
+
+            </div>
+
+
+            <h2>
+
+                No Quiz Data Yet
+
+            </h2>
+
+
+            <p>
+
+                Complete a quiz first.
+                StudyPilot will analyze your results here.
+
+            </p>
+
+
+            <a
+                class="back"
+                href="/"
+            >
+
+                Go to StudyPilot
+
+            </a>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+
+    <div class="footer">
+
+        StudyPilot • AI-powered learning assistant
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

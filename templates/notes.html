@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Notes - StudyPilot</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f6f7fb;
+            --white: #ffffff;
+            --text: #111827;
+            --muted: #667085;
+            --border: #e5e7eb;
+
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+
+            --blue: #1d4ed8;
+            --blue-bg: #eff6ff;
+            --blue-border: #bfdbfe;
+
+            --red: #dc2626;
+            --red-bg: #fef2f2;
+            --red-border: #fecaca;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(99, 102, 241, .08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(124, 58, 237, .06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            width:
+                min(
+                    1100px,
+                    calc(100% - 32px)
+                );
+
+            margin:
+                18px auto 0;
+
+            padding:
+                12px 14px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .90
+                );
+
+            border:
+                1px solid
+                rgba(
+                    229,
+                    231,
+                    235,
+                    .9
+                );
+
+            border-radius:
+                16px;
+
+            box-shadow:
+                0 6px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+
+        .logo {
+
+            font-size:
+                19px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -.4px;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .nav-links {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                flex-end;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                7px;
+        }
+
+
+        .nav-links a {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                7px 10px;
+
+            border:
+                1px solid
+                transparent;
+
+            border-radius:
+                9px;
+
+            color:
+                #475467;
+
+            text-decoration:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            transition:
+                .2s ease;
+        }
+
+
+        .nav-links a:hover {
+
+            color:
+                var(--primary);
+
+            background:
+                var(--primary-light);
+
+            border-color:
+                #c7d2fe;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+
+            width:
+                min(
+                    850px,
+                    calc(100% - 32px)
+                );
+
+            margin:
+                0 auto;
+
+            padding:
+                55px 0 60px;
+        }
+
+
+        /* =========================
+           MAIN CARD
+        ========================= */
+
+        .card {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .97
+                );
+
+            padding:
+                38px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                22px;
+
+            box-shadow:
+                0 14px 40px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .07
+                );
+        }
+
+
+        .card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            left:
+                0;
+
+            top:
+                0;
+
+            right:
+                0;
+
+            height:
+                4px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4f46e5,
+                    #6366f1,
+                    #8b5cf6
+                );
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .icon {
+
+            width:
+                64px;
+
+            height:
+                64px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            margin-bottom:
+                17px;
+
+            border-radius:
+                18px;
+
+            background:
+                var(--primary-light);
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            font-size:
+                30px;
+        }
+
+
+        h1 {
+
+            font-size:
+                clamp(
+                    29px,
+                    5vw,
+                    40px
+                );
+
+            line-height:
+                1.15;
+
+            letter-spacing:
+                -1px;
+
+            margin-bottom:
+                9px;
+        }
+
+
+        .subtitle {
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+
+            line-height:
+                1.7;
+
+            max-width:
+                680px;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error {
+
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            gap:
+                10px;
+
+            background:
+                var(--red-bg);
+
+            color:
+                var(--red);
+
+            border:
+                1px solid
+                var(--red-border);
+
+            padding:
+                12px 14px;
+
+            border-radius:
+                11px;
+
+            margin:
+                22px 0 0;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.5;
+
+            font-weight:
+                600;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        form {
+
+            margin-top:
+                25px;
+        }
+
+
+        label {
+
+            display:
+                block;
+
+            margin-bottom:
+                8px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            color:
+                #344054;
+        }
+
+
+        .input-wrapper {
+
+            position:
+                relative;
+        }
+
+
+        input {
+
+            width:
+                100%;
+
+            min-height:
+                50px;
+
+            padding:
+                13px 15px;
+
+            border:
+                1px solid
+                #d0d5dd;
+
+            border-radius:
+                11px;
+
+            background:
+                #ffffff;
+
+            color:
+                var(--text);
+
+            font-size:
+                14px;
+
+            outline:
+                none;
+
+            transition:
+                .2s ease;
+        }
+
+
+        input::placeholder {
+
+            color:
+                #98a2b3;
+        }
+
+
+        input:focus {
+
+            border-color:
+                #818cf8;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .10
+                );
+        }
+
+
+        button {
+
+            width:
+                100%;
+
+            min-height:
+                51px;
+
+            margin-top:
+                13px;
+
+            padding:
+                13px 18px;
+
+            border:
+                none;
+
+            border-radius:
+                11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color:
+                #ffffff;
+
+            font-size:
+                14px;
+
+            font-weight:
+                800;
+
+            cursor:
+                pointer;
+
+            box-shadow:
+                0 8px 18px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .20
+                );
+
+            transition:
+                .2s ease;
+        }
+
+
+        button:hover {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 22px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .25
+                );
+        }
+
+
+        button:active {
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* =========================
+           TIP
+        ========================= */
+
+        .tip {
+
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            gap:
+                10px;
+
+            margin-top:
+                20px;
+
+            padding:
+                15px;
+
+            background:
+                var(--blue-bg);
+
+            border:
+                1px solid
+                var(--blue-border);
+
+            border-radius:
+                11px;
+
+            color:
+                #1e40af;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.6;
+        }
+
+
+        .tip-icon {
+
+            flex-shrink:
+                0;
+
+            font-size:
+                16px;
+        }
+
+
+        .tip strong {
+
+            color:
+                #1e3a8a;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+
+            text-align:
+                center;
+
+            color:
+                #98a2b3;
+
+            font-size:
+                12px;
+
+            margin-top:
+                28px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .nav-links {
+
+                justify-content:
+                    flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                margin-top:
+                    11px;
+            }
+
+
+            .nav-links {
+
+                width:
+                    100%;
+
+                display:
+                    grid;
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+            }
+
+
+            .nav-links a {
+
+                background:
+                    #f8fafc;
+
+                border-color:
+                    var(--border);
+
+                text-align:
+                    center;
+            }
+
+
+            .container {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                padding-top:
+                    34px;
+            }
+
+
+            .card {
+
+                padding:
+                    27px 20px;
+
+                border-radius:
+                    18px;
+            }
+
+
+            h1 {
+
+                font-size:
+                    29px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+
+        📚 StudyPilot
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            🏠 Home
+        </a>
+
+        <a href="/quiz-history">
+            📊 Quiz History
+        </a>
+
+        <a href="/weak-topics">
+            🧠 Weak Topics
+        </a>
+
+        <a href="/adaptive-plan">
+            🔄 Adaptive Plan
+        </a>
+
+        <a href="/notes">
+            📝 Notes PDF
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="container">
+
+
+    <div class="card">
+
+
+        <div class="icon">
+
+            📝
+
+        </div>
+
+
+        <h1>
+
+            AI Handwritten Notes
+
+        </h1>
+
+
+        <p class="subtitle">
+
+            Choose any topic from your study plan.
+            StudyPilot will create concise revision notes
+            and download them as a notebook-style PDF.
+
+        </p>
+
+
+
+        {% if error %}
+
+
+            <div class="error">
+
+                ⚠️
+
+                <span>
+
+                    {{ error }}
+
+                </span>
+
+            </div>
+
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             FORM
+        ========================= -->
+
+        <form
+            method="POST"
+            action="/notes"
+        >
+
+
+            <label for="topic">
+
+                Topic
+
+            </label>
+
+
+            <div class="input-wrapper">
+
+                <input
+                    id="topic"
+                    name="topic"
+                    type="text"
+                    placeholder="e.g. Binary Search, Dijkstra's Algorithm"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+            >
+
+                ✨ Generate & Download Handwritten PDF
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- =========================
+             TIP
+        ========================= -->
+
+        <div class="tip">
+
+
+            <div class="tip-icon">
+
+                💡
+
+            </div>
+
+
+            <div>
+
+                <strong>Tip:</strong>
+                Use a specific topic name for better notes.
+                The AI also receives your latest study-plan
+                syllabus as context.
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="footer">
+
+        StudyPilot • AI-powered learning assistant
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -20,131 +20,876 @@
             padding: 0;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            color: #1f2937;
+        :root {
+            --bg: #f6f7fb;
+            --white: #ffffff;
+            --text: #111827;
+            --muted: #667085;
+            --border: #e5e7eb;
+
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+
+            --green: #16a34a;
+
+            --shadow:
+                0 12px 35px rgba(15, 23, 42, 0.07);
+
+            --shadow-small:
+                0 6px 20px rgba(15, 23, 42, 0.05);
         }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(99, 102, 241, 0.08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(124, 58, 237, 0.06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
-            max-width: 850px;
-            margin: auto;
-            padding: 35px 20px;
+
+            width:
+                min(
+                    900px,
+                    calc(100% - 32px)
+                );
+
+            margin: 0 auto;
+
+            padding:
+                22px 0 50px;
         }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 45px;
+
+            padding:
+                12px 14px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .88
+                );
+
+            border:
+                1px solid
+                rgba(
+                    229,
+                    231,
+                    235,
+                    .9
+                );
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 6px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+
+        .brand {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            letter-spacing:
+                -.4px;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .nav-link {
+
+            display: inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            min-height: 36px;
+
+            padding:
+                7px 12px;
+
+            border-radius: 9px;
+
+            text-decoration:
+                none;
+
+            color:
+                #4338ca;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                .2s ease;
+        }
+
+
+        .nav-link:hover {
+
+            background:
+                #eef2ff;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+
+            text-align:
+                center;
+
+            max-width:
+                720px;
+
+            margin:
+                0 auto 32px;
         }
+
+
+        .quiz-icon {
+
+            width: 64px;
+
+            height: 64px;
+
+            display: grid;
+
+            place-items:
+                center;
+
+            margin:
+                0 auto 16px;
+
+            font-size: 30px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #eef2ff,
+                    #e0e7ff
+                );
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                0 10px 28px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .10
+                );
+        }
+
 
         .header h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
+
+            font-size:
+                clamp(
+                    32px,
+                    5vw,
+                    44px
+                );
+
+            line-height:
+                1.1;
+
+            letter-spacing:
+                -1.5px;
+
+            margin-bottom:
+                8px;
         }
+
 
         .header p {
-            color: #6b7280;
+
+            color:
+                var(--muted);
+
+            font-size:
+                15px;
+
+            margin-bottom:
+                13px;
         }
+
+
+        /* =========================
+           TOPIC
+        ========================= */
 
         .topic-badge {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 8px 14px;
-            border-radius: 20px;
-            background: #eef2ff;
-            color: #4f46e5;
-            font-weight: bold;
-            font-size: 14px;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap: 6px;
+
+            padding:
+                7px 13px;
+
+            border-radius:
+                999px;
+
+            background:
+                var(--primary-light);
+
+            color:
+                var(--primary);
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
         }
+
+
+        /* =========================
+           QUIZ INFO
+        ========================= */
+
+        .quiz-info {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap: 12px;
+
+            margin-bottom:
+                18px;
+
+            padding:
+                14px 17px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .9
+                );
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                13px;
+
+            box-shadow:
+                var(--shadow-small);
+        }
+
+
+        .quiz-info span {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+        }
+
+
+        .quiz-count {
+
+            color:
+                var(--primary);
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            background:
+                var(--primary-light);
+
+            padding:
+                6px 10px;
+
+            border-radius:
+                999px;
+        }
+
+
+        /* =========================
+           QUESTION CARD
+        ========================= */
 
         .question-card {
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            padding:
+                27px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                18px;
+
+            margin-bottom:
+                17px;
+
+            box-shadow:
+                var(--shadow-small);
+
+            transition:
+                .2s ease;
         }
+
+
+        .question-card:hover {
+
+            box-shadow:
+                var(--shadow);
+
+            transform:
+                translateY(-1px);
+        }
+
 
         .question-number {
-            color: #4f46e5;
-            font-weight: bold;
-            margin-bottom: 10px;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            padding:
+                6px 10px;
+
+            margin-bottom:
+                13px;
+
+            border-radius:
+                8px;
+
+            background:
+                var(--primary-light);
+
+            color:
+                var(--primary);
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .3px;
         }
+
 
         .question {
-            font-size: 19px;
-            font-weight: bold;
-            line-height: 1.5;
-            margin-bottom: 20px;
+
+            font-size:
+                18px;
+
+            font-weight:
+                750;
+
+            line-height:
+                1.55;
+
+            margin-bottom:
+                20px;
         }
+
+
+        /* =========================
+           OPTIONS
+        ========================= */
 
         .option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 13px;
-            margin-bottom: 10px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: .2s;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                11px;
+
+            padding:
+                14px;
+
+            margin-bottom:
+                10px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                11px;
+
+            cursor:
+                pointer;
+
+            background:
+                #ffffff;
+
+            transition:
+                .18s ease;
         }
+
 
         .option:hover {
-            background: #f8fafc;
-            border-color: #c7d2fe;
+
+            background:
+                #f8f9ff;
+
+            border-color:
+                #a5b4fc;
+
+            transform:
+                translateX(2px);
         }
+
 
         .option input {
-            cursor: pointer;
+
+            width:
+                17px;
+
+            height:
+                17px;
+
+            flex-shrink:
+                0;
+
+            accent-color:
+                var(--primary);
+
+            cursor:
+                pointer;
         }
+
 
         .option label {
-            cursor: pointer;
-            flex: 1;
+
+            flex:
+                1;
+
+            cursor:
+                pointer;
+
+            font-size:
+                14px;
+
+            color:
+                #344054;
+
+            line-height:
+                1.45;
         }
+
+
+        /* Highlight selected option */
+
+        .option:has(input:checked) {
+
+            background:
+                #eef2ff;
+
+            border-color:
+                #818cf8;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .06
+                );
+        }
+
+
+        .option:has(input:checked) label {
+
+            color:
+                #3730a3;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =========================
+           SUBMIT BUTTON
+        ========================= */
 
         .submit-button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: #4f46e5;
-            color: white;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
+
+            width:
+                100%;
+
+            min-height:
+                52px;
+
+            padding:
+                13px 18px;
+
+            border:
+                none;
+
+            border-radius:
+                11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color:
+                #ffffff;
+
+            font-size:
+                15px;
+
+            font-weight:
+                800;
+
+            cursor:
+                pointer;
+
+            margin-top:
+                8px;
+
+            box-shadow:
+                0 8px 18px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .20
+                );
+
+            transition:
+                .2s ease;
         }
+
 
         .submit-button:hover {
-            background: #4338ca;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 22px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .25
+                );
         }
 
-        .back-button {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            padding: 14px;
-            border-radius: 10px;
-            text-decoration: none;
-            color: #4f46e5;
-            background: white;
-            font-weight: bold;
+
+        .submit-button:active {
+
+            transform:
+                translateY(0);
         }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-button {
+
+            display:
+                block;
+
+            text-align:
+                center;
+
+            margin-top:
+                13px;
+
+            padding:
+                13px;
+
+            border-radius:
+                11px;
+
+            text-decoration:
+                none;
+
+            color:
+                var(--primary);
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            font-size:
+                14px;
+
+            font-weight:
+                750;
+
+            transition:
+                .2s ease;
+        }
+
+
+        .back-button:hover {
+
+            background:
+                var(--primary-light);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+
+            text-align:
+                center;
+
+            color:
+                #98a2b3;
+
+            font-size:
+                12px;
+
+            margin-top:
+                25px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-width: 600px) {
 
-            .header h1 {
-                font-size: 30px;
+            .container {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                padding-top:
+                    12px;
             }
+
+
+            .navbar {
+
+                margin-bottom:
+                    34px;
+            }
+
+
+            .brand {
+
+                font-size:
+                    17px;
+            }
+
+
+            .header h1 {
+
+                font-size:
+                    32px;
+            }
+
+
+            .quiz-icon {
+
+                width:
+                    58px;
+
+                height:
+                    58px;
+
+                font-size:
+                    27px;
+            }
+
 
             .question-card {
-                padding: 20px;
+
+                padding:
+                    20px;
+
+                border-radius:
+                    15px;
             }
 
+
             .question {
-                font-size: 17px;
+
+                font-size:
+                    17px;
+            }
+
+
+            .option {
+
+                padding:
+                    13px;
+
+                gap:
+                    9px;
+            }
+
+
+            .option label {
+
+                font-size:
+                    13px;
+            }
+
+
+            .quiz-info {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
             }
 
         }
@@ -156,34 +901,112 @@
 
 <body>
 
+
 <div class="container">
 
 
-    <!-- HEADER -->
+    <!-- =========================
+         NAVBAR
+    ========================= -->
 
-    <div class="header">
+    <div class="navbar">
 
-        <h1>
-            🤖 StudyPilot Quiz
-        </h1>
 
-        <p>
-            Test your understanding
-        </p>
+        <div class="brand">
 
-        <div class="topic-badge">
-            {{ quiz.topic }}
+            🎓 StudyPilot
+
         </div>
+
+
+        <a
+            href="/"
+            class="nav-link"
+        >
+
+            🏠 Home
+
+        </a>
+
 
     </div>
 
 
-    <!-- QUIZ -->
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+
+        <div class="quiz-icon">
+
+            🤖
+
+        </div>
+
+
+        <h1>
+
+            StudyPilot Quiz
+
+        </h1>
+
+
+        <p>
+
+            Test your understanding with
+            an AI-generated quiz.
+
+        </p>
+
+
+        <div class="topic-badge">
+
+            📚 {{ quiz.topic }}
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         QUIZ INFO
+    ========================= -->
+
+    <div class="quiz-info">
+
+
+        <span>
+
+            📝 Answer all questions before submitting.
+
+        </span>
+
+
+        <div class="quiz-count">
+
+            5 Questions
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         QUIZ FORM
+    ========================= -->
 
     <form
         action="/submit-quiz"
         method="POST"
     >
+
 
         <!-- Quiz ID -->
 
@@ -194,23 +1017,30 @@
         >
 
 
-        <!-- QUESTIONS -->
+
+        <!-- =========================
+             QUESTIONS
+        ========================= -->
 
         {% for question in quiz.questions %}
 
+
         <div class="question-card">
 
+
             <div class="question-number">
+
                 Question {{ loop.index }}
+
             </div>
 
 
             <div class="question">
+
                 {{ question.question }}
+
             </div>
 
-
-            <!-- Save current question number -->
 
             {% set question_number = loop.index0 %}
 
@@ -219,7 +1049,9 @@
 
             {% for option in question.options %}
 
+
             <div class="option">
+
 
                 <input
                     type="radio"
@@ -229,44 +1061,71 @@
                     required
                 >
 
+
                 <label
                     for="q{{ question_number }}_option{{ loop.index0 }}"
                 >
+
                     {{ option }}
+
                 </label>
+
 
             </div>
 
+
             {% endfor %}
 
+
         </div>
+
 
         {% endfor %}
 
 
-        <!-- SUBMIT -->
+
+        <!-- =========================
+             SUBMIT
+        ========================= -->
 
         <button
             type="submit"
             class="submit-button"
         >
+
             Submit Quiz 🚀
+
         </button>
+
 
     </form>
 
 
-    <!-- BACK -->
+
+    <!-- =========================
+         BACK
+    ========================= -->
 
     <a
         href="/"
         class="back-button"
     >
+
         ← Back to Home
+
     </a>
 
 
+
+    <div class="footer">
+
+        StudyPilot • AI-powered learning assistant
+
+    </div>
+
+
 </div>
+
 
 </body>
 

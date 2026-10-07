@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Quiz History - StudyPilot</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f6f7fb;
+            --white: #ffffff;
+            --text: #111827;
+            --muted: #667085;
+            --border: #e5e7eb;
+
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+
+            --green: #15803d;
+            --green-bg: #f0fdf4;
+            --green-border: #bbf7d0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(99, 102, 241, .08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(124, 58, 237, .06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            width:
+                min(
+                    1100px,
+                    calc(100% - 32px)
+                );
+
+            margin:
+                18px auto 0;
+
+            padding:
+                12px 14px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .90
+                );
+
+            border:
+                1px solid
+                rgba(
+                    229,
+                    231,
+                    235,
+                    .9
+                );
+
+            border-radius:
+                16px;
+
+            box-shadow:
+                0 6px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+
+        .logo {
+
+            font-size:
+                19px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -.4px;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .nav-links {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                flex-end;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                7px;
+        }
+
+
+        .nav-links a {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                7px 10px;
+
+            border:
+                1px solid
+                transparent;
+
+            border-radius:
+                9px;
+
+            color:
+                #475467;
+
+            text-decoration:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            transition:
+                .2s ease;
+        }
+
+
+        .nav-links a:hover {
+
+            color:
+                var(--primary);
+
+            background:
+                var(--primary-light);
+
+            border-color:
+                #c7d2fe;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+
+            width:
+                min(
+                    1000px,
+                    calc(100% - 32px)
+                );
+
+            margin:
+                0 auto;
+
+            padding:
+                48px 0 55px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .page-header {
+
+            margin-bottom:
+                28px;
+        }
+
+
+        .page-header h1 {
+
+            font-size:
+                clamp(
+                    30px,
+                    5vw,
+                    40px
+                );
+
+            letter-spacing:
+                -1px;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .subtitle {
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+        }
+
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    1fr
+                );
+
+            gap:
+                14px;
+
+            margin-bottom:
+                24px;
+        }
+
+
+        .stat-card {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .95
+                );
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                15px;
+
+            padding:
+                17px;
+
+            box-shadow:
+                0 6px 22px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .045
+                );
+        }
+
+
+        .stat-label {
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                5px;
+        }
+
+
+        .stat-value {
+
+            font-size:
+                24px;
+
+            font-weight:
+                850;
+
+            color:
+                var(--primary);
+        }
+
+
+        /* =========================
+           HISTORY CARD
+        ========================= */
+
+        .history-card {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                20px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                17px;
+
+            padding:
+                19px 21px;
+
+            margin-bottom:
+                12px;
+
+            box-shadow:
+                0 7px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .045
+                );
+
+            transition:
+                .2s ease;
+        }
+
+
+        .history-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                #c7d2fe;
+
+            box-shadow:
+                0 11px 30px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .07
+                );
+        }
+
+
+        .history-left {
+
+            min-width:
+                0;
+        }
+
+
+        .topic {
+
+            font-size:
+                16px;
+
+            font-weight:
+                800;
+
+            margin-bottom:
+                6px;
+
+            word-break:
+                break-word;
+        }
+
+
+        .date {
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+        }
+
+
+        /* =========================
+           SCORE
+        ========================= */
+
+        .history-right {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            flex-shrink:
+                0;
+        }
+
+
+        .score {
+
+            font-size:
+                20px;
+
+            font-weight:
+                850;
+
+            color:
+                var(--text);
+        }
+
+
+        .percentage {
+
+            padding:
+                6px 10px;
+
+            border-radius:
+                999px;
+
+            background:
+                var(--green-bg);
+
+            border:
+                1px solid
+                var(--green-border);
+
+            color:
+                var(--green);
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            padding:
+                55px 25px;
+
+            text-align:
+                center;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+        }
+
+
+        .empty-icon {
+
+            font-size:
+                45px;
+
+            margin-bottom:
+                13px;
+        }
+
+
+        .empty h2 {
+
+            font-size:
+                22px;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .empty p {
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .back-button {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                11px 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color:
+                #ffffff;
+
+            text-decoration:
+                none;
+
+            border-radius:
+                10px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            box-shadow:
+                0 7px 17px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .18
+                );
+
+            transition:
+                .2s ease;
+        }
+
+
+        .back-button:hover {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+
+            text-align:
+                center;
+
+            color:
+                #98a2b3;
+
+            font-size:
+                12px;
+
+            margin-top:
+                28px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .nav-links {
+
+                justify-content:
+                    flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                margin-top:
+                    11px;
+            }
+
+
+            .nav-links {
+
+                width:
+                    100%;
+
+                display:
+                    grid;
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+            }
+
+
+            .nav-links a {
+
+                background:
+                    #f8fafc;
+
+                border-color:
+                    var(--border);
+
+                text-align:
+                    center;
+            }
+
+
+            .container {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                padding-top:
+                    34px;
+            }
+
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .history-card {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+
+                padding:
+                    18px;
+            }
+
+
+            .history-right {
+
+                width:
+                    100%;
+
+                justify-content:
+                    space-between;
+            }
+
+
+            .score {
+
+                font-size:
+                    19px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+
+        📚 StudyPilot
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            🏠 Home
+        </a>
+
+        <a href="/quiz-history">
+            📊 Quiz History
+        </a>
+
+        <a href="/weak-topics">
+            🧠 Weak Topics
+        </a>
+
+        <a href="/adaptive-plan">
+            🔄 Adaptive Plan
+        </a>
+
+        <a href="/notes">
+            📝 Notes PDF
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="container">
+
+
+    <div class="page-header">
+
+        <h1>
+            📊 Quiz History
+        </h1>
+
+        <p class="subtitle">
+            Review your previous quiz attempts and track your learning progress.
+        </p>
+
+    </div>
+
+
+
+    {% if history %}
+
+
+    <!-- =========================
+         QUICK STATS
+    ========================= -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                TOTAL QUIZ ATTEMPTS
+            </div>
+
+            <div class="stat-value">
+                {{ history|length }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                LATEST QUIZ SCORE
+            </div>
+
+            <div class="stat-value">
+
+                {{ history[0]["score"] }}/{{ history[0]["total_questions"] }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         HISTORY
+    ========================= -->
+
+    {% for quiz in history %}
+
+
+    <div class="history-card">
+
+
+        <div class="history-left">
+
+
+            <div class="topic">
+
+                📝 {{ quiz["topic"] }}
+
+            </div>
+
+
+            <div class="date">
+
+                📅 {{ quiz["created_at"] }}
+
+            </div>
+
+
+        </div>
+
+
+        <div class="history-right">
+
+
+            <div class="score">
+
+                {{ quiz["score"] }}/{{ quiz["total_questions"] }}
+
+            </div>
+
+
+            <div class="percentage">
+
+                {{ ((quiz["score"] / quiz["total_questions"]) * 100) | round(0) }}%
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    {% endfor %}
+
+
+    {% else %}
+
+
+    <!-- =========================
+         EMPTY STATE
+    ========================= -->
+
+    <div class="empty">
+
+
+        <div class="empty-icon">
+
+            📭
+
+        </div>
+
+
+        <h2>
+
+            No Quiz History Yet
+
+        </h2>
+
+
+        <p>
+
+            Complete your first quiz and your result will appear here.
+
+        </p>
+
+
+        <a
+            href="/"
+            class="back-button"
+        >
+
+            Go to StudyPilot
+
+        </a>
+
+
+    </div>
+
+
+    {% endif %}
+
+
+
+    <div class="footer">
+
+        StudyPilot • AI-powered learning assistant
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

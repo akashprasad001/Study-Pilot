@@ -20,97 +20,962 @@
             padding: 0;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            color: #1f2937;
+        :root {
+            --bg: #f6f7fb;
+            --white: #ffffff;
+            --text: #111827;
+            --muted: #667085;
+            --border: #e5e7eb;
+
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+
+            --green: #15803d;
+            --green-bg: #f0fdf4;
+            --green-border: #bbf7d0;
+
+            --red: #dc2626;
+            --red-bg: #fef2f2;
+            --red-border: #fecaca;
         }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(99, 102, 241, 0.08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(124, 58, 237, 0.06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
-            max-width: 850px;
-            margin: auto;
-            padding: 40px 20px;
+
+            width:
+                min(
+                    900px,
+                    calc(100% - 32px)
+                );
+
+            margin: 0 auto;
+
+            padding:
+                22px 0 50px;
         }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-bottom:
+                42px;
+
+            padding:
+                12px 14px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .88
+                );
+
+            border:
+                1px solid
+                rgba(
+                    229,
+                    231,
+                    235,
+                    .9
+                );
+
+            border-radius:
+                16px;
+
+            box-shadow:
+                0 6px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+
+        .brand {
+
+            font-size:
+                19px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -.4px;
+        }
+
+
+        .home-link {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                7px 12px;
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            border-radius:
+                9px;
+
+            background:
+                #ffffff;
+
+            color:
+                #4338ca;
+
+            text-decoration:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                750;
+
+            transition:
+                .2s ease;
+        }
+
+
+        .home-link:hover {
+
+            background:
+                var(--primary-light);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================
+           RESULT CARD
+        ========================= */
 
         .result-card {
-            background: white;
-            padding: 35px;
-            border-radius: 18px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
-            margin-bottom: 25px;
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            padding:
+                40px 30px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                22px;
+
+            text-align:
+                center;
+
+            box-shadow:
+                0 14px 40px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .08
+                );
+
+            margin-bottom:
+                22px;
         }
+
+
+        .result-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            top:
+                0;
+
+            left:
+                0;
+
+            right:
+                0;
+
+            height:
+                4px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4f46e5,
+                    #6366f1,
+                    #8b5cf6
+                );
+        }
+
+
+        .result-icon {
+
+            width:
+                66px;
+
+            height:
+                66px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            margin:
+                0 auto 15px;
+
+            border-radius:
+                18px;
+
+            background:
+                var(--primary-light);
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            font-size:
+                31px;
+        }
+
 
         .result-card h1 {
-            margin-bottom: 10px;
+
+            font-size:
+                clamp(
+                    28px,
+                    5vw,
+                    38px
+                );
+
+            letter-spacing:
+                -.8px;
+
+            margin-bottom:
+                7px;
         }
+
+
+        .subtitle {
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+
+            margin-bottom:
+                15px;
+        }
+
 
         .topic {
-            color: #6b7280;
-            margin-bottom: 25px;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                7px 13px;
+
+            border-radius:
+                999px;
+
+            background:
+                var(--primary-light);
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            color:
+                var(--primary);
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            margin-bottom:
+                25px;
         }
+
+
+        /* =========================
+           SCORE
+        ========================= */
 
         .score {
-            font-size: 52px;
-            font-weight: bold;
-            color: #4f46e5;
+
+            font-size:
+                clamp(
+                    48px,
+                    10vw,
+                    68px
+                );
+
+            line-height:
+                1;
+
+            font-weight:
+                850;
+
+            color:
+                var(--primary);
+
+            letter-spacing:
+                -2px;
         }
+
 
         .percentage {
-            font-size: 20px;
-            margin-top: 8px;
+
+            display:
+                inline-block;
+
+            margin-top:
+                12px;
+
+            padding:
+                7px 14px;
+
+            border-radius:
+                999px;
+
+            background:
+                #f8fafc;
+
+            border:
+                1px solid
+                var(--border);
+
+            color:
+                #344054;
+
+            font-size:
+                18px;
+
+            font-weight:
+                800;
         }
+
+
+        /* =========================
+           REVIEW HEADER
+        ========================= */
+
+        .review-heading {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin:
+                28px 2px 14px;
+        }
+
+
+        .review-heading h2 {
+
+            font-size:
+                20px;
+
+            letter-spacing:
+                -.3px;
+        }
+
+
+        .review-heading span {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+        }
+
+
+        /* =========================
+           REVIEW CARD
+        ========================= */
 
         .review {
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 18px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            padding:
+                24px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                17px;
+
+            margin-bottom:
+                15px;
+
+            box-shadow:
+                0 7px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+
+            transition:
+                .2s ease;
         }
 
-        .review h3 {
-            margin-bottom: 12px;
+
+        .review:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 28px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .07
+                );
         }
 
-        .review p {
-            line-height: 1.5;
-            margin-bottom: 8px;
+
+        .review-top {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                13px;
         }
+
+
+        .question-number {
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .3px;
+
+            color:
+                var(--primary);
+
+            background:
+                var(--primary-light);
+
+            padding:
+                6px 10px;
+
+            border-radius:
+                8px;
+        }
+
+
+        .status {
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            padding:
+                6px 10px;
+
+            border-radius:
+                999px;
+        }
+
 
         .correct {
-            color: #15803d;
-            font-weight: bold;
+
+            color:
+                var(--green);
+
+            background:
+                var(--green-bg);
+
+            border:
+                1px solid
+                var(--green-border);
+
+            font-weight:
+                750;
         }
+
 
         .wrong {
-            color: #dc2626;
-            font-weight: bold;
+
+            color:
+                var(--red);
+
+            background:
+                var(--red-bg);
+
+            border:
+                1px solid
+                var(--red-border);
+
+            font-weight:
+                750;
         }
+
+
+        .review-question {
+
+            font-size:
+                16px;
+
+            font-weight:
+                750;
+
+            line-height:
+                1.55;
+
+            margin-bottom:
+                17px;
+        }
+
+
+        /* =========================
+           ANSWERS
+        ========================= */
+
+        .answer-box {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .answer {
+
+            padding:
+                12px 13px;
+
+            border-radius:
+                10px;
+
+            background:
+                #f8fafc;
+
+            border:
+                1px solid
+                var(--border);
+
+            font-size:
+                13px;
+
+            line-height:
+                1.45;
+        }
+
+
+        .answer strong {
+
+            display:
+                block;
+
+            font-size:
+                11px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .3px;
+
+            color:
+                var(--muted);
+
+            margin-bottom:
+                4px;
+        }
+
+
+        .answer.your-answer {
+
+            background:
+                #f8fafc;
+        }
+
+
+        .answer.correct-answer {
+
+            background:
+                var(--green-bg);
+
+            border-color:
+                var(--green-border);
+        }
+
+
+        .answer.correct-answer strong {
+
+            color:
+                var(--green);
+        }
+
+
+        /* =========================
+           EXPLANATION
+        ========================= */
 
         .explanation {
-            margin-top: 12px;
-            padding: 12px;
-            background: #f8fafc;
-            border-radius: 8px;
-            line-height: 1.5;
+
+            margin-top:
+                12px;
+
+            padding:
+                14px;
+
+            background:
+                #f8fafc;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-left:
+                3px solid
+                #818cf8;
+
+            border-radius:
+                10px;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.6;
+
+            color:
+                #475467;
         }
+
+
+        .explanation strong {
+
+            color:
+                #344054;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
 
         .button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin-top: 25px;
-            background: #4f46e5;
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            border-radius: 10px;
-            font-weight: bold;
+
+            display:
+                block;
+
+            width:
+                100%;
+
+            padding:
+                14px;
+
+            margin-top:
+                25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color:
+                white;
+
+            text-decoration:
+                none;
+
+            text-align:
+                center;
+
+            border-radius:
+                11px;
+
+            font-size:
+                14px;
+
+            font-weight:
+                800;
+
+            box-shadow:
+                0 8px 18px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .20
+                );
+
+            transition:
+                .2s ease;
         }
 
+
         .button:hover {
-            background: #4338ca;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 22px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .25
+                );
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+
+            text-align:
+                center;
+
+            color:
+                #98a2b3;
+
+            font-size:
+                12px;
+
+            margin-top:
+                22px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                width:
+                    calc(
+                        100% - 22px
+                    );
+
+                padding-top:
+                    12px;
+            }
+
+
+            .navbar {
+
+                margin-bottom:
+                    32px;
+            }
+
+
+            .brand {
+
+                font-size:
+                    17px;
+            }
+
+
+            .result-card {
+
+                padding:
+                    32px 20px;
+            }
+
+
+            .result-card h1 {
+
+                font-size:
+                    29px;
+            }
+
+
+            .score {
+
+                font-size:
+                    54px;
+            }
+
+
+            .review {
+
+                padding:
+                    19px;
+            }
+
+
+            .review-top {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .answer-box {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .review-question {
+
+                font-size:
+                    15px;
+            }
+
         }
 
     </style>
@@ -120,98 +985,238 @@
 
 <body>
 
+
 <div class="container">
 
 
-    <!-- RESULT SUMMARY -->
+    <!-- =========================
+         NAVBAR
+    ========================= -->
 
-    <div class="result-card">
+    <div class="navbar">
 
-        <h1>
-            🎉 Quiz Completed
-        </h1>
 
-        <div class="topic">
-            {{ topic }}
+        <div class="brand">
+
+            🎓 StudyPilot
+
         </div>
 
-        <div class="score">
-            {{ score }} / {{ total_questions }}
-        </div>
 
-        <div class="percentage">
-            {{ "%.0f"|format(percentage) }}%
-        </div>
+        <a
+            href="/"
+            class="home-link"
+        >
+
+            🏠 Home
+
+        </a>
+
 
     </div>
 
 
-    <!-- QUESTION REVIEW -->
+
+    <!-- =========================
+         RESULT SUMMARY
+    ========================= -->
+
+    <div class="result-card">
+
+
+        <div class="result-icon">
+
+            🎉
+
+        </div>
+
+
+        <h1>
+
+            Quiz Completed!
+
+        </h1>
+
+
+        <p class="subtitle">
+
+            Here's how you performed
+
+        </p>
+
+
+        <div class="topic">
+
+            📚 {{ topic }}
+
+        </div>
+
+
+        <div class="score">
+
+            {{ score }} / {{ total_questions }}
+
+        </div>
+
+
+        <div class="percentage">
+
+            {{ "%.0f"|format(percentage) }}%
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         REVIEW HEADING
+    ========================= -->
+
+    <div class="review-heading">
+
+
+        <h2>
+
+            📋 Answer Review
+
+        </h2>
+
+
+        <span>
+
+            {{ total_questions }} Questions
+
+        </span>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         QUESTION REVIEW
+    ========================= -->
 
     {% for result in results %}
 
+
     <div class="review">
 
-        <h3>
-            Question {{ loop.index }}
-        </h3>
 
-        <p>
+        <div class="review-top">
+
+
+            <div class="question-number">
+
+                Question {{ loop.index }}
+
+            </div>
+
+
+            {% if result.is_correct %}
+
+                <div class="status correct">
+
+                    ✅ Correct
+
+                </div>
+
+            {% else %}
+
+                <div class="status wrong">
+
+                    ❌ Incorrect
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+
+        <div class="review-question">
+
             {{ result.question }}
-        </p>
+
+        </div>
 
 
-        {% if result.is_correct %}
-
-        <p class="correct">
-            ✅ Correct
-        </p>
-
-        {% else %}
-
-        <p class="wrong">
-            ❌ Incorrect
-        </p>
-
-        {% endif %}
+        <div class="answer-box">
 
 
-        <p>
-            <strong>Your answer:</strong>
-            {{ result.selected }}
-        </p>
+            <div class="answer your-answer">
+
+                <strong>
+
+                    Your Answer
+
+                </strong>
+
+                {{ result.selected }}
+
+            </div>
 
 
-        <p>
-            <strong>Correct answer:</strong>
-            {{ result.correct }}
-        </p>
+            <div class="answer correct-answer">
+
+                <strong>
+
+                    Correct Answer
+
+                </strong>
+
+                {{ result.correct }}
+
+            </div>
+
+
+        </div>
 
 
         <div class="explanation">
 
-            <strong>Explanation:</strong>
+            <strong>
+                💡 Explanation:
+            </strong>
 
             {{ result.explanation }}
 
         </div>
 
+
     </div>
+
 
     {% endfor %}
 
 
-    <!-- BACK BUTTON -->
+
+    <!-- =========================
+         BACK BUTTON
+    ========================= -->
 
     <a
         href="/"
         class="button"
     >
+
         ← Create New Study Plan
+
     </a>
 
 
+    <div class="footer">
+
+        StudyPilot • AI-powered learning assistant
+
+    </div>
+
+
 </div>
+
 
 </body>
 

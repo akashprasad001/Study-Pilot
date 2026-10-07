@@ -20,100 +20,495 @@
             padding: 0;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            color: #1f2937;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        :root {
+            --bg: #f6f7fb;
+            --white: #ffffff;
+            --text: #111827;
+            --muted: #667085;
+            --border: #d0d5dd;
+
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+
+            --red: #dc2626;
+            --red-bg: #fef2f2;
+            --red-border: #fecaca;
         }
+
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(99, 102, 241, .10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 100%,
+                    rgba(124, 58, 237, .08),
+                    transparent 30%
+                ),
+                var(--bg);
+
+            color: var(--text);
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
+
             width: 100%;
-            max-width: 430px;
-            padding: 20px;
+
+            max-width: 440px;
         }
+
+
+        /* =========================
+           CARD
+        ========================= */
 
         .card {
-            background: white;
-            padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, .08);
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .97
+                );
+
+            padding: 38px;
+
+            border:
+                1px solid
+                #e5e7eb;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 18px 50px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .09
+                );
         }
+
+
+        .card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            right: 0;
+
+            height: 4px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4f46e5,
+                    #6366f1,
+                    #8b5cf6
+                );
+        }
+
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo-icon {
+
+            width: 62px;
+
+            height: 62px;
+
+            display: grid;
+
+            place-items: center;
+
+            margin:
+                0 auto 15px;
+
+            border-radius: 18px;
+
+            background:
+                var(--primary-light);
+
+            border:
+                1px solid
+                #c7d2fe;
+
+            font-size: 29px;
+        }
+
 
         .logo {
+
             text-align: center;
-            font-size: 30px;
-            font-weight: bold;
-            margin-bottom: 8px;
+
+            font-size: 27px;
+
+            font-weight: 850;
+
+            letter-spacing: -.8px;
+
+            margin-bottom: 6px;
         }
+
 
         .subtitle {
+
             text-align: center;
-            color: #6b7280;
-            margin-bottom: 30px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            margin-bottom: 27px;
         }
 
-        .form-group {
-            margin-bottom: 18px;
-        }
 
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #d1d5db;
-            border-radius: 9px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #4f46e5;
-        }
-
-        .button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 9px;
-            background: #4f46e5;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .button:hover {
-            background: #4338ca;
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 20px;
-            color: #6b7280;
-        }
-
-        .signup-link a {
-            color: #4f46e5;
-            text-decoration: none;
-            font-weight: bold;
-        }
+        /* =========================
+           ERROR
+        ========================= */
 
         .error {
-            background: #fee2e2;
-            color: #b91c1c;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 18px;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 8px;
+
+            background:
+                var(--red-bg);
+
+            color:
+                var(--red);
+
+            border:
+                1px solid
+                var(--red-border);
+
+            padding:
+                11px 13px;
+
+            border-radius:
+                10px;
+
+            margin-bottom:
+                18px;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.45;
+
+            font-weight:
+                600;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+
+            margin-bottom:
+                17px;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color:
+                #344054;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            padding:
+                12px 14px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                10px;
+
+            background:
+                #ffffff;
+
+            color:
+                var(--text);
+
+            font-size:
+                14px;
+
+            outline:
+                none;
+
+            transition:
+                .2s ease;
+        }
+
+
+        input::placeholder {
+
+            color:
+                #98a2b3;
+        }
+
+
+        input:hover {
+
+            border-color:
+                #98a2b3;
+        }
+
+
+        input:focus {
+
+            border-color:
+                #818cf8;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .10
+                );
+        }
+
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .button {
+
+            width: 100%;
+
+            min-height: 50px;
+
+            padding:
+                13px 18px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 18px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .20
+                );
+
+            transition:
+                .2s ease;
+        }
+
+
+        .button:hover {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4338ca,
+                    #4f46e5
+                );
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 22px
+                rgba(
+                    79,
+                    70,
+                    229,
+                    .25
+                );
+        }
+
+
+        .button:active {
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* =========================
+           SIGNUP LINK
+        ========================= */
+
+        .signup-link {
+
             text-align: center;
+
+            margin-top: 21px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid
+                #eef0f3;
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+        }
+
+
+        .signup-link a {
+
+            color:
+                var(--primary);
+
+            text-decoration:
+                none;
+
+            font-weight:
+                800;
+
+            margin-left: 3px;
+        }
+
+
+        .signup-link a:hover {
+
+            color:
+                var(--primary-dark);
+
+            text-decoration:
+                underline;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+
+            text-align: center;
+
+            color:
+                #98a2b3;
+
+            font-size:
+                11px;
+
+            margin-top: 18px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 500px) {
+
+            body {
+
+                padding: 13px;
+            }
+
+
+            .card {
+
+                padding:
+                    29px 21px;
+
+                border-radius:
+                    18px;
+            }
+
+
+            .logo {
+
+                font-size:
+                    25px;
+            }
+
         }
 
     </style>
@@ -123,90 +518,156 @@
 
 <body>
 
+
 <div class="container">
+
 
     <div class="card">
 
-        <div class="logo">
-            🎓 StudyPilot
+
+        <!-- LOGO -->
+
+        <div class="logo-icon">
+
+            🎓
+
         </div>
 
+
+        <div class="logo">
+
+            StudyPilot
+
+        </div>
+
+
         <p class="subtitle">
+
             Login to your account
+
         </p>
 
 
+
+        <!-- ERROR -->
+
         {% if error %}
 
-        <div class="error">
-            {{ error }}
-        </div>
+
+            <div class="error">
+
+                ⚠️
+
+                <span>
+
+                    {{ error }}
+
+                </span>
+
+            </div>
+
 
         {% endif %}
 
+
+
+        <!-- LOGIN FORM -->
 
         <form
             action="/login"
             method="POST"
         >
 
+
             <div class="form-group">
 
+
                 <label for="email">
+
                     Email
+
                 </label>
+
 
                 <input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="Enter your email"
+                    autocomplete="email"
                     required
                 >
+
 
             </div>
 
 
+
             <div class="form-group">
 
+
                 <label for="password">
+
                     Password
+
                 </label>
+
 
                 <input
                     type="password"
                     id="password"
                     name="password"
                     placeholder="Enter your password"
+                    autocomplete="current-password"
                     required
                 >
 
+
             </div>
+
 
 
             <button
                 type="submit"
                 class="button"
             >
+
                 Login
+
             </button>
+
 
         </form>
 
+
+
+        <!-- SIGNUP -->
 
         <div class="signup-link">
 
             Don't have an account?
 
             <a href="/signup">
+
                 Sign Up
+
             </a>
 
         </div>
 
+
     </div>
 
+
+    <div class="footer">
+
+        StudyPilot • AI-powered learning assistant
+
+    </div>
+
+
 </div>
+
 
 </body>
 

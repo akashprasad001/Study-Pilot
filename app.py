@@ -1,10 +1,20 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, send_file
 from dotenv import load_dotenv
 from groq import Groq
 from datetime import date, datetime, timedelta
 import os
 import json
+import re
 import sqlite3
+from io import BytesIO
+from xml.sax.saxutils import escape
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.enums import TA_LEFT
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.lib import colors
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
@@ -344,7 +354,20 @@ IMPORTANT:
 - Use the final available day mainly for revision when appropriate.
 - Do not add topics that are not present in the syllabus.
 - Do not create unnecessary duplicate topics.
-- Return ONLY the requested structured JSON.
+- Return ONLY valid JSON.
+- The top-level JSON object MUST contain exactly these keys: days and revision_strategy.
+- days MUST be an array. Each day MUST contain exactly these keys: day, date, topic, study_time, practice, revision.
+- Use strings for date, topic, study_time, practice and revision.
+- Use an integer for day.
+
+OUTPUT REQUIREMENTS:
+- Return ONLY one valid JSON object.
+- Do not include Markdown, code fences, or any text outside the JSON.
+- The top-level object must contain: days and revision_strategy.
+- Each item in days must contain: day, date, topic, study_time, practice, revision.
+- day must be an integer. All other fields must be strings.
+
+Return ONLY the JSON object.
 """
 
     # -------------------------
@@ -444,19 +467,13 @@ IMPORTANT:
 
         reasoning_effort="low",
 
+        # Use JSON Object Mode here. The prompt requires the exact JSON
+        # structure, and the response is parsed and validated below.
         response_format={
-            "type": "json_schema",
-
-            "json_schema": {
-
-                "name": "study_plan",
-
-                "strict": True,
-
-                "schema": schema
-            }
+            "type": "json_object"
         }
-    )
+
+)
 
     ai_result = response.choices[0].message.content
 
@@ -480,9 +497,65 @@ IMPORTANT:
 
         return """
         <h1>AI Response Error ❌</h1>
-        <p>The AI returned an invalid study plan.</p>
+        <p>The AI returned invalid JSON.</p>
         <a href="/">Try Again</a>
         """
+
+    # Some JSON-object responses may wrap the actual plan inside a
+    # "study_plan" or "plan" object. Unwrap it safely.
+    if isinstance(ai_plan, dict) and isinstance(ai_plan.get("study_plan"), dict):
+        ai_plan = ai_plan["study_plan"]
+    elif isinstance(ai_plan, dict) and isinstance(ai_plan.get("plan"), dict):
+        ai_plan = ai_plan["plan"]
+
+    days = ai_plan.get("days") if isinstance(ai_plan, dict) else None
+    if days is None and isinstance(ai_plan, dict):
+        days = ai_plan.get("study_days") or ai_plan.get("schedule")
+
+    if not isinstance(days, list) or not days:
+        return """
+        <h1>AI Response Error ❌</h1>
+        <p>The AI did not return any study days.</p>
+        <a href="/">Try Again</a>
+        """
+
+    # Normalize each day so small variations in the AI response do not break
+    # the application. The actual dates/day numbers always come from our
+    # trusted server-side date list.
+    normalized_days = []
+
+    for index, day in enumerate(days):
+
+        if not isinstance(day, dict):
+            continue
+
+        normalized_days.append({
+            "day": index + 1,
+            "date": study_dates[index] if index < len(study_dates) else str(exam_day),
+            "topic": str(day.get("topic") or day.get("main_topic") or day.get("subject") or "Revision"),
+            "study_time": str(day.get("study_time") or day.get("time") or f"{study_hours} hours"),
+            "practice": str(day.get("practice") or day.get("practice_activity") or "Practice questions from this topic."),
+            "revision": str(day.get("revision") or day.get("revision_activity") or "Review the key concepts."),
+        })
+
+    # Keep exactly the available study days.
+    normalized_days = normalized_days[:len(study_dates)]
+
+    if not normalized_days:
+        return """
+        <h1>AI Response Error ❌</h1>
+        <p>The AI returned an empty study plan.</p>
+        <a href="/">Try Again</a>
+        """
+
+    revision_strategy = ""
+    if isinstance(ai_plan, dict):
+        revision_strategy = ai_plan.get("revision_strategy") or ai_plan.get("revision") or "Use the final available days for revision and practice."
+
+    ai_plan = {
+        "days": normalized_days,
+        "revision_strategy": str(revision_strategy)
+    }
 
     # -------------------------
     # Save Study Plan
@@ -967,20 +1040,12 @@ Rules:
 
         reasoning_effort="low",
 
+        # Use JSON Object Mode here. The quiz response is validated below.
         response_format={
-
-            "type": "json_schema",
-
-            "json_schema": {
-
-                "name": "study_quiz",
-
-                "strict": True,
-
-                "schema": quiz_schema
-            }
+            "type": "json_object"
         }
-    )
+
+)
 
     ai_result = response.choices[0].message.content
 
@@ -1008,9 +1073,20 @@ Rules:
 
         return """
         <h1>Quiz Response Error ❌</h1>
-        <p>The AI returned invalid quiz data.</p>
+        <p>The AI returned invalid quiz JSON.</p>
         <a href="/">Try Again</a>
         """
+
+    if not isinstance(quiz_data, dict):
+        conn.close()
+        return """
+        <h1>Quiz Response Error ❌</h1>
+        <p>The AI returned an invalid quiz structure.</p>
+        <a href="/">Try Again</a>
+        """
+
+    if isinstance(quiz_data.get("quiz"), dict):
+        quiz_data = quiz_data["quiz"]
 
     questions = quiz_data.get(
         "questions",
@@ -1280,6 +1356,499 @@ def submit_quiz():
 
         results=results
     )
+
+
+
+# =========================
+# QUIZ HISTORY
+# =========================
+
+@app.route("/quiz-history")
+def quiz_history():
+
+    auth_redirect = login_required()
+    if auth_redirect:
+        return auth_redirect
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            quiz_results.id,
+            quiz_results.topic,
+            quiz_results.score,
+            quiz_results.total_questions,
+            quiz_results.created_at
+        FROM quiz_results
+        JOIN study_plans
+            ON study_plans.id = quiz_results.plan_id
+        WHERE study_plans.user_id = ?
+        ORDER BY quiz_results.created_at DESC
+    """, (session["user_id"],))
+
+    history = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "quiz_history.html",
+        history=history
+    )
+
+
+
+# =========================
+# WEAK TOPIC DETECTION
+# =========================
+
+@app.route("/weak-topics")
+def weak_topics():
+
+    auth_redirect = login_required()
+    if auth_redirect:
+        return auth_redirect
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            quiz_results.topic,
+            COUNT(quiz_results.id) AS attempts,
+            SUM(quiz_results.score) AS total_score,
+            SUM(quiz_results.total_questions) AS total_questions,
+            ROUND(
+                (CAST(SUM(quiz_results.score) AS REAL)
+                / NULLIF(SUM(quiz_results.total_questions), 0)) * 100,
+                1
+            ) AS percentage
+        FROM quiz_results
+        JOIN study_plans
+            ON study_plans.id = quiz_results.plan_id
+        WHERE study_plans.user_id = ?
+        GROUP BY quiz_results.topic
+        ORDER BY percentage ASC, attempts DESC
+    """, (session["user_id"],))
+
+    topic_rows = cursor.fetchall()
+    conn.close()
+
+    weak = [row for row in topic_rows if float(row[4] or 0) < 60]
+
+    return render_template(
+        "weak_topics.html",
+        topics=topic_rows,
+        weak_topics=weak
+    )
+
+
+
+# =========================
+# ADAPTIVE STUDY PLAN
+# =========================
+
+@app.route("/adaptive-plan")
+def adaptive_plan():
+
+    auth_redirect = login_required()
+    if auth_redirect:
+        return auth_redirect
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # Get the student's latest study plan.
+    cursor.execute("""
+        SELECT id, exam_date, study_hours, syllabus
+        FROM study_plans
+        WHERE user_id = ?
+        ORDER BY id DESC
+        LIMIT 1
+    """, (session["user_id"],))
+
+    latest_plan = cursor.fetchone()
+
+    if not latest_plan:
+        conn.close()
+        return """
+        <h1>No Study Plan Found ❌</h1>
+        <p>Create a study plan first.</p>
+        <a href="/">Go to StudyPilot</a>
+        """
+
+    # Calculate topic performance from this user's quiz history.
+    cursor.execute("""
+        SELECT
+            quiz_results.topic,
+            COUNT(quiz_results.id) AS attempts,
+            SUM(quiz_results.score) AS total_score,
+            SUM(quiz_results.total_questions) AS total_questions,
+            ROUND(
+                (CAST(SUM(quiz_results.score) AS REAL)
+                / NULLIF(SUM(quiz_results.total_questions), 0)) * 100,
+                1
+            ) AS percentage
+        FROM quiz_results
+        JOIN study_plans
+            ON study_plans.id = quiz_results.plan_id
+        WHERE study_plans.user_id = ?
+        GROUP BY quiz_results.topic
+        ORDER BY percentage ASC, attempts DESC
+    """, (session["user_id"],))
+
+    topic_rows = cursor.fetchall()
+    weak_rows = [row for row in topic_rows if float(row[4] or 0) < 60]
+
+    if not weak_rows:
+        conn.close()
+        return render_template(
+            "adaptive_plan.html",
+            adaptive_days=[],
+            weak_topics=[],
+            message="No weak topics detected yet. Complete a quiz below 60% to trigger an adaptive plan.",
+            plan=latest_plan
+        )
+
+    # Use the remaining days up to the exam date, capped at 7 for a focused plan.
+    today = date.today()
+    exam_day = datetime.strptime(latest_plan["exam_date"], "%Y-%m-%d").date()
+    remaining_days = max(1, (exam_day - today).days + 1)
+    plan_days = min(remaining_days, 7)
+
+    weak_topic_text = "\n".join(
+        f"- {row[0]}: {row[4]}% average, {row[1]} attempt(s), {row[2]}/{row[3]} correct"
+        for row in weak_rows
+    )
+
+    adaptive_dates = "\n".join(
+        f"Day {i + 1}: {today + timedelta(days=i)}"
+        for i in range(plan_days)
+    )
+
+    prompt = f"""
+You are StudyPilot, an adaptive learning assistant.
+
+Create a focused adaptive study plan using the student's actual quiz performance.
+
+WEAK TOPICS:
+{weak_topic_text}
+
+LATEST SYLLABUS:
+{latest_plan['syllabus']}
+
+DAILY STUDY TIME:
+{latest_plan['study_hours']} hours
+
+AVAILABLE ADAPTIVE DATES:
+{adaptive_dates}
+
+RULES:
+- Prioritize the weakest topics first.
+- Give extra practice and revision to weak topics.
+- Do not add topics that are not in the syllabus or weak-topic list.
+- Keep each day within the student's daily study time.
+- Include practice questions and revision.
+- Return ONLY valid JSON.
+- The top-level object must contain exactly one key: adaptive_days.
+- adaptive_days must be an array.
+- Every item must contain exactly these keys: day, date, focus, study_time, practice, revision.
+- All values must be strings except day, which must be an integer.
+"""
+
+    try:
+        response = client.chat.completions.create(
+            model="openai/gpt-oss-20b",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You return only valid JSON objects with no markdown."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.2,
+            max_completion_tokens=4096,
+            reasoning_effort="low",
+            response_format={"type": "json_object"}
+        )
+
+        ai_result = response.choices[0].message.content
+        adaptive_data = json.loads(ai_result)
+        adaptive_days = adaptive_data.get("adaptive_days", [])
+
+    except Exception:
+        conn.close()
+        return """
+        <h1>Adaptive Plan Error ❌</h1>
+        <p>StudyPilot could not generate the adaptive plan right now.</p>
+        <a href="/weak-topics">Back to Weak Topics</a>
+        """
+
+    conn.close()
+
+    return render_template(
+        "adaptive_plan.html",
+        adaptive_days=adaptive_days,
+        weak_topics=weak_rows,
+        message=None,
+        plan=latest_plan
+    )
+
+# =========================
+# AI HANDWRITTEN NOTES + PDF
+# =========================
+
+def _build_handwritten_pdf(notes_data):
+    buffer = BytesIO()
+
+    # Use an installed cursive-style font when available. Fall back safely.
+    font_name = "Helvetica-Oblique"
+    try:
+        cursive_candidates = [
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf",
+        ]
+        for font_path in cursive_candidates:
+            if os.path.exists(font_path):
+                pdfmetrics.registerFont(TTFont("StudyPilotHand", font_path))
+                font_name = "StudyPilotHand"
+                break
+    except Exception:
+        pass
+
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=45,
+        leftMargin=55,
+        topMargin=50,
+        bottomMargin=45,
+        title=str(notes_data.get("title", "StudyPilot Notes")),
+        author="StudyPilot"
+    )
+
+    title_style = ParagraphStyle(
+        "HandTitle", fontName=font_name, fontSize=22, leading=28,
+        spaceAfter=14, textColor=colors.HexColor("#1d4ed8")
+    )
+    section_style = ParagraphStyle(
+        "HandSection", fontName=font_name, fontSize=14, leading=19,
+        spaceBefore=8, spaceAfter=7, textColor=colors.HexColor("#1e40af")
+    )
+    body_style = ParagraphStyle(
+        "HandBody", fontName=font_name, fontSize=11.5, leading=19,
+        spaceAfter=6, textColor=colors.HexColor("#1f3b64")
+    )
+    small_style = ParagraphStyle(
+        "HandSmall", fontName=font_name, fontSize=9, leading=14,
+        textColor=colors.HexColor("#64748b")
+    )
+
+    story = []
+    story.append(Paragraph(escape(str(notes_data.get("title", "StudyPilot Notes"))), title_style))
+    story.append(Paragraph("AI-generated revision notes • StudyPilot", small_style))
+    story.append(Spacer(1, 8))
+
+    overview = str(notes_data.get("overview", ""))
+    if overview:
+        story.append(Paragraph("Overview", section_style))
+        story.append(Paragraph(escape(overview), body_style))
+
+    sections = [
+        ("✦ Key Points", notes_data.get("key_points", [])),
+        ("✎ Examples", notes_data.get("examples", [])),
+        ("⚠ Common Mistakes", notes_data.get("common_mistakes", [])),
+        ("✓ Quick Revision", notes_data.get("quick_revision", [])),
+    ]
+
+    for heading, items in sections:
+        if not isinstance(items, list) or not items:
+            continue
+        story.append(Paragraph(heading, section_style))
+        for item in items:
+            story.append(Paragraph("• " + escape(str(item)), body_style))
+
+    def notebook_background(canvas, doc):
+        canvas.saveState()
+        width, height = A4
+        # Notebook-style horizontal lines
+        canvas.setStrokeColor(colors.HexColor("#dbeafe"))
+        canvas.setLineWidth(0.35)
+        y = 42
+        while y < height - 35:
+            canvas.line(35, y, width - 35, y)
+            y += 20
+        # Red margin line
+        canvas.setStrokeColor(colors.HexColor("#fecaca"))
+        canvas.setLineWidth(0.7)
+        canvas.line(48, 35, 48, height - 35)
+        canvas.restoreState()
+
+    doc.build(story, onFirstPage=notebook_background, onLaterPages=notebook_background)
+    buffer.seek(0)
+    return buffer
+
+
+@app.route("/notes", methods=["GET", "POST"])
+def notes():
+
+    auth_redirect = login_required()
+    if auth_redirect:
+        return auth_redirect
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, syllabus
+        FROM study_plans
+        WHERE user_id = ?
+        ORDER BY id DESC
+        LIMIT 1
+    """, (session["user_id"],))
+
+    latest_plan = cursor.fetchone()
+    conn.close()
+
+    if not latest_plan:
+        return """
+        <h1>No Study Plan Found ❌</h1>
+        <p>Create a study plan first.</p>
+        <a href="/">Go to StudyPilot</a>
+        """
+
+    if request.method == "GET":
+        return render_template("notes.html", syllabus=latest_plan["syllabus"])
+
+    topic = request.form.get("topic", "").strip()
+
+    if not topic:
+        return render_template(
+            "notes.html",
+            syllabus=latest_plan["syllabus"],
+            error="Please enter a topic."
+        )
+
+    prompt = f"""
+You are StudyPilot, an AI study-notes assistant.
+
+Create concise, exam-focused revision notes for this topic:
+
+TOPIC:
+{topic}
+
+STUDENT SYLLABUS:
+{latest_plan["syllabus"]}
+
+Only generate notes related to the requested topic.
+Keep the notes suitable for a college student preparing for an exam.
+Include definitions, formulas, algorithms, steps, examples, and important points when relevant.
+Return ONLY one valid JSON object.
+
+The JSON should normally contain these fields:
+- title: string
+- overview: string
+- key_points: array of strings
+- examples: array of strings
+- common_mistakes: array of strings
+- quick_revision: array of strings
+"""
+
+    try:
+        response = client.chat.completions.create(
+            model="openai/gpt-oss-20b",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Return one valid JSON object containing the study notes."
+                },
+                {"role": "user", "content": prompt}
+            ],
+            max_completion_tokens=4096,
+            reasoning_effort="low",
+            response_format={"type": "json_object"}
+        )
+
+        ai_result = response.choices[0].message.content
+
+        if not ai_result:
+            raise ValueError("AI returned an empty response.")
+
+        notes_data = json.loads(ai_result)
+
+        if not isinstance(notes_data, dict):
+            raise ValueError("AI returned an invalid JSON object.")
+
+        # Some model responses may wrap the notes inside another object.
+        # Accept common wrapper names instead of failing.
+        for wrapper in ("notes", "study_notes", "data", "result"):
+            if isinstance(notes_data.get(wrapper), dict):
+                notes_data = notes_data[wrapper]
+                break
+
+        # Never fail the PDF just because the model omitted one optional field.
+        # Give every field a safe fallback so the PDF builder always has a
+        # predictable structure.
+        title = notes_data.get("title") or topic
+        overview = notes_data.get("overview") or (
+            f"Exam-focused revision notes for {topic}."
+        )
+
+        def normalize_list(value, fallback=None):
+            if isinstance(value, list):
+                return [str(item) for item in value if str(item).strip()]
+            if isinstance(value, str) and value.strip():
+                return [value.strip()]
+            return fallback or []
+
+        key_points = normalize_list(notes_data.get("key_points"))
+        examples = normalize_list(notes_data.get("examples"))
+        common_mistakes = normalize_list(notes_data.get("common_mistakes"))
+        quick_revision = normalize_list(
+            notes_data.get("quick_revision"),
+            key_points[:6]
+        )
+
+        notes_data = {
+            "title": str(title),
+            "overview": str(overview),
+            "key_points": key_points,
+            "examples": examples,
+            "common_mistakes": common_mistakes,
+            "quick_revision": quick_revision
+        }
+
+        pdf_buffer = _build_handwritten_pdf(notes_data)
+
+        filename = re.sub(
+            r"[^A-Za-z0-9_-]+",
+            "_",
+            topic
+        ).strip("_") or "study_notes"
+
+        filename = filename[:60] + "_handwritten_notes.pdf"
+
+        return send_file(
+            pdf_buffer,
+            mimetype="application/pdf",
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        print("\n===================================")
+        print("NOTES GENERATION ERROR")
+        print(str(e))
+        print("===================================\n")
+
+        return render_template(
+            "notes.html",
+            syllabus=latest_plan["syllabus"],
+            error=f"Notes generation failed: {str(e)}"
+        )
 
 
 # =========================
